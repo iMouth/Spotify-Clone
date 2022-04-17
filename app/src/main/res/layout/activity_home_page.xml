@@ -4,6 +4,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomePageActivity">
+    tools:context=".HomePageActivity"
+    android:background="@color/spotify_background">
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/helper_icon"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/nowPlayingView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/bottomScreenButtons">
+
+        <ImageView
+            android:id="@+id/albumCoverImage"
+            android:layout_weight="0.05"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp" />
+
+        <LinearLayout
+            android:id="@+id/nowPlayingText"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.8"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_height="20dp"
+                android:text="Song Name"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Artist Name"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.05"
+            android:background="@drawable/play_icon" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomScreenButtons"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/homePageButton"
+            android:background="@drawable/home_icon"
+            android:layout_width="50dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+        </Button>
+        <Button
+            android:id="@+id/browsePageButton"
+            android:background="@drawable/browse_icon"
+            android:layout_width="50dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+        </Button>
+        <Button
+            android:id="@+id/searchPageButton"
+            android:background="@drawable/search_icon"
+            android:layout_width="50dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+        </Button>
+        <Button
+            android:id="@+id/myLibraryButton"
+            android:background="@drawable/my_library_icon"
+            android:layout_width="50dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+        </Button>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
