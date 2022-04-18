@@ -2,4 +2,5 @@
     <string name="app_name">SpotifyClone</string>
     <string name="welcome_page">Welcome to Spotify Clone!</string>
     <string name="welcome_page_button">Start Exploring</string>
+    <string name="instructions">Click on one of the buttons below to explore more and start grooving!</string>
 </resources>

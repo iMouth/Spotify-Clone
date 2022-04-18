@@ -13,17 +13,9 @@ public class WelcomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
-
-        Button startExploring = (Button) findViewById(R.id.startExploringButton);
-        startExploring.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openHomePage();
-            }
-        });
     }
 
-    public void openHomePage() {
+    public void openHomePage(View v) {
         Intent homePageIntent = new Intent(this, HomePageActivity.class);
         startActivity(homePageIntent);
     }
