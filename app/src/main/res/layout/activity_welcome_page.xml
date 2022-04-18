@@ -43,6 +43,7 @@
         android:background="@drawable/rounded_btn"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
+        android:onClick="openHomePage"
         app:layout_constraintTop_toBottomOf="@id/welcomeToSpotifyClone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
