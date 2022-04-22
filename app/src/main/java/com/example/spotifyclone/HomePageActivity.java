@@ -17,6 +17,8 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
         TextView greetingMessageView = (TextView) findViewById(R.id.greetingMessage);
         greetingMessageView.setText(setGreetingMessage());
+
+
     }
 
     public String setGreetingMessage() {

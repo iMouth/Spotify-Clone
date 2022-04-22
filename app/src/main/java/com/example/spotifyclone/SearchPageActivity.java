@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchPageActivity extends AppCompatActivity {
-    private static final String CLIENT_ID = "eb56514e9b9f49a3addef0fb8da5d279";
+    private static final String CLIENT_ID = "203ce3a5264842a68daf7c3b22e6e803";
     private static final String CLIENT_SECRET = "b68c98da213a4cebb4ea7e18bab55bc4";
     private static final String REDIRECT_URI = "http://com.example.spotifyclone/callback";
     private static String choice = "artist";
@@ -46,7 +46,7 @@ public class SearchPageActivity extends AppCompatActivity {
     private static List<String> songListName = new ArrayList<String>();
     private static String search;
     private static final int REQUEST_CODE = 1337;
-    private static String token;
+    private static String token = "BQDnTvENHpSYI3bNnUo6Gd66gsjZcRmh8qAMO9DPhONVm6ZZnAWi8StshNrOT7gMRYi8KAEm9APtvPjtmjvRyePxg92RCENLscoJYpVgVN5ZAMPIphqT1NwefRqTDkKNj11QxePWubfXgz_nlVR1V-d7l9YyWVkIpw2yY4PA7fyM4X7tTaYLNYsSdfp769ZeiSQuGLZZbLJqfIBUB7HefBEmDuBGYt6kTJAZF-TENbOJSymit7UCHSGYDTEDgpDQcTsKwaJCam6VXwnK1i3VwAmzwbI";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,14 +193,14 @@ public class SearchPageActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(this, R.layout.song_row, songListName);
-        ListView lw = findViewById(R.id.songs);
+        ListView lw = findViewById(R.id.listOfSongs);
         lw.setAdapter(itemsAdapter);
-        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                remote.getPlayerApi().play(songListURI.get(position));
-            }
-        });
-        itemsAdapter.notifyDataSetChanged();
+//        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                remote.getPlayerApi().play(songListURI.get(position));
+//            }
+//        });
+//        itemsAdapter.notifyDataSetChanged();
     }
 
     @Override
