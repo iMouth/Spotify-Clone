@@ -46,7 +46,7 @@ public class SearchPageActivity extends AppCompatActivity {
     private static List<String> songListName = new ArrayList<String>();
     private static String search;
     private static final int REQUEST_CODE = 1337;
-    private static String token = "BQDnTvENHpSYI3bNnUo6Gd66gsjZcRmh8qAMO9DPhONVm6ZZnAWi8StshNrOT7gMRYi8KAEm9APtvPjtmjvRyePxg92RCENLscoJYpVgVN5ZAMPIphqT1NwefRqTDkKNj11QxePWubfXgz_nlVR1V-d7l9YyWVkIpw2yY4PA7fyM4X7tTaYLNYsSdfp769ZeiSQuGLZZbLJqfIBUB7HefBEmDuBGYt6kTJAZF-TENbOJSymit7UCHSGYDTEDgpDQcTsKwaJCam6VXwnK1i3VwAmzwbI";
+    private static String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +56,27 @@ public class SearchPageActivity extends AppCompatActivity {
         Button artistBtn = findViewById(R.id.artist);
         setButtons(songBtn, artistBtn, "song");
         setButtons(artistBtn, songBtn, "artist");
-
+        setToken();
+        setRemote();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    public void setToken() {
+        // Gets token for API Calls
+        AuthorizationRequest.Builder builder =
+                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
+
+        builder.setScopes(new String[]{"streaming"});
+        AuthorizationRequest request = builder.build();
+
+        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
+    }
+
+    public void setRemote() {
         ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
+            new ConnectionParams.Builder(CLIENT_ID)
+                    .setRedirectUri(REDIRECT_URI)
+                    .showAuthView(true)
+                    .build();
 
         // Sets up remote controller for spotify
         SpotifyAppRemote.connect(this, connectionParams,
@@ -84,16 +94,6 @@ public class SearchPageActivity extends AppCompatActivity {
                         Log.e("MyActivity", throwable.getMessage(), throwable);
                     }
                 });
-
-        // Gets token for API Calls
-        AuthorizationRequest.Builder builder =
-                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
-
-        builder.setScopes(new String[]{"streaming"});
-        AuthorizationRequest request = builder.build();
-
-        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {

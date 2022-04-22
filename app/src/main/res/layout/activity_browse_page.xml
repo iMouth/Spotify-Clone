@@ -17,6 +17,59 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
+    <Button
+        android:id="@+id/genre1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.33"
+        app:layout_constraintHeight_percent="0.2"
+        android:backgroundTint="@color/red"
+        android:text="Genre"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/genre2"
+        app:layout_constraintTop_toBottomOf="@+id/browse"
+        app:layout_constraintBottom_toTopOf="@+id/genre3"/>
+
+    <Button
+        android:id="@+id/genre2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.33"
+        app:layout_constraintHeight_percent="0.2"
+        android:backgroundTint="@color/purple"
+        android:text="Genre"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/genre1"
+        app:layout_constraintTop_toBottomOf="@+id/browse"
+        app:layout_constraintBottom_toTopOf="@id/genre4"/>
+
+    <Button
+        android:id="@+id/genre3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.33"
+        app:layout_constraintHeight_percent="0.2"
+        android:backgroundTint="@color/orange"
+        android:text="Genre"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/genre4"
+        app:layout_constraintTop_toBottomOf="@+id/genre1" />
+
+    <Button
+        android:id="@+id/genre4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.33"
+        app:layout_constraintHeight_percent="0.2"
+        android:backgroundTint="@color/pink"
+        android:text="Genre"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/genre3"
+        app:layout_constraintTop_toBottomOf="@+id/genre2"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -27,9 +80,11 @@
         android:fontFamily="@font/montserrat_alternates_medium"
         android:gravity="center"
         android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/browse"/>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="vertical"
@@ -46,28 +101,28 @@
 
             <ImageView
                 android:id="@+id/albumCoverImage"
-                android:layout_weight="0.05"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp" />
+                android:layout_weight="0.05" />
 
             <LinearLayout
                 android:id="@+id/nowPlayingText"
                 android:layout_width="wrap_content"
-                android:layout_weight="0.8"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:onClick="openNowPlayingPage">
+                android:layout_weight="0.8"
+                android:onClick="openNowPlayingPage"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
                     android:text="Song Name"
-                    android:textStyle="bold"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -85,6 +140,7 @@
 
         </LinearLayout>
 
+
         <LinearLayout
             android:id="@+id/bottomScreenButtons"
             android:layout_width="match_parent"
@@ -94,42 +150,39 @@
 
             <Button
                 android:id="@+id/homePageButton"
-                android:background="@drawable/home_icon"
                 android:layout_width="50dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openHomePage">
-            </Button>
+                android:layout_weight="1"
+                android:background="@drawable/home_icon"
+                android:onClick="openHomePage"></Button>
 
             <Button
                 android:id="@+id/browsePageButton"
-                android:background="@drawable/browse_icon"
                 android:layout_width="50dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openBrowsePage">
-            </Button>
+                android:layout_weight="1"
+                android:background="@drawable/browse_icon"
+                android:onClick="openBrowsePage"></Button>
 
             <Button
                 android:id="@+id/searchPageButton"
-                android:background="@drawable/search_icon"
                 android:layout_width="50dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openSearchPage">
-            </Button>
+                android:layout_weight="1"
+                android:background="@drawable/search_icon"
+                android:onClick="openSearchPage"></Button>
 
             <Button
                 android:id="@+id/myLibraryButton"
-                android:background="@drawable/my_library_icon"
                 android:layout_width="50dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openMyLibraryPage">
-            </Button>
+                android:layout_weight="1"
+                android:background="@drawable/my_library_icon"
+                android:onClick="openMyLibraryPage"></Button>
 
         </LinearLayout>
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
