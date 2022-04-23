@@ -7,8 +7,13 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -35,6 +40,8 @@ public class BrowsePageActivity extends AppCompatActivity {
     private static List<String> colors = new ArrayList<>();
     private static String token;
     private static Player player;
+    private static List<String> songListURI = new ArrayList<String>();
+    private static List<String> songListName = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,10 @@ public class BrowsePageActivity extends AppCompatActivity {
         random.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { randomize(); }});
+        Button back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { changeDisplay(); }});
     }
 
     public void setButtons() {
@@ -101,12 +112,55 @@ public class BrowsePageActivity extends AppCompatActivity {
     }
 
     public void updateUI(JSONObject songObj) {
-        findViewById(R.id.genre1).setVisibility(View.GONE);
-        findViewById(R.id.genre2).setVisibility(View.GONE);
-        findViewById(R.id.genre3).setVisibility(View.GONE);
-        findViewById(R.id.genre4).setVisibility(View.GONE);
-        findViewById(R.id.randomize).setVisibility(View.GONE);
+        try {
+            songListName.clear();
+            songListURI.clear();
+            JSONArray items = songObj.getJSONObject("tracks").getJSONArray("items");
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject trackObj = items.getJSONObject(i);
+                String uri = trackObj.getString("uri");
+                String name = trackObj.getString("name");
+                songListURI.add(uri);
+                songListName.add(name);
+            }
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        setList(songObj);
+        changeDisplay();
+    }
+
+    public void setList(JSONObject songObj) {
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(this, R.layout.song_row, songListName);
+        ListView lw = findViewById(R.id.browseSongs);
+        lw.setAdapter(itemsAdapter);
+        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO: At the song to the list of library songs from player.addSong with needed information
+            }
+        });
+        itemsAdapter.notifyDataSetChanged();
+    }
+
+    public void changeDisplay() {
+        int visible1;
+        int visible2;
+        if (findViewById(R.id.genre1).getVisibility() == View.GONE) {
+            visible1 = View.VISIBLE;
+            visible2 = View.GONE;
+        } else {
+            visible1 = View.GONE;
+            visible2 = View.VISIBLE;
+        }
+        findViewById(R.id.genre1).setVisibility(visible1);
+        findViewById(R.id.genre2).setVisibility(visible1);
+        findViewById(R.id.genre3).setVisibility(visible1);
+        findViewById(R.id.genre4).setVisibility(visible1);
+        findViewById(R.id.randomize).setVisibility(visible1);
+        findViewById(R.id.back).setVisibility(visible2);
+        findViewById(R.id.browseSongs).setVisibility(visible2);
     }
 
 

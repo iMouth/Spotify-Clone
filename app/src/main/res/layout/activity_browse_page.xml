@@ -28,7 +28,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/genre2"
         app:layout_constraintTop_toBottomOf="@+id/browse"
-        app:layout_constraintBottom_toTopOf="@+id/genre3"/>
+        app:layout_constraintBottom_toTopOf="@+id/genre3"
+        />
 
     <Button
         android:id="@+id/genre2"
@@ -41,7 +42,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/genre1"
         app:layout_constraintTop_toBottomOf="@+id/browse"
-        app:layout_constraintBottom_toTopOf="@id/genre4"/>
+        app:layout_constraintBottom_toTopOf="@id/genre4"
+        />
 
     <Button
         android:id="@+id/genre3"
@@ -54,7 +56,8 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/genre4"
-        app:layout_constraintTop_toBottomOf="@+id/genre1" />
+        app:layout_constraintTop_toBottomOf="@+id/genre1"
+        />
 
     <Button
         android:id="@+id/genre4"
@@ -68,6 +71,7 @@
         app:layout_constraintLeft_toRightOf="@id/genre3"
         app:layout_constraintTop_toBottomOf="@+id/genre2"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+
         />
 
     <TextView
@@ -82,6 +86,42 @@
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/randomize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Randomize"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/browse"
+        app:layout_constraintVertical_bias="0.0"
+        android:backgroundTint="@color/green"
+
+        />
+
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationY="-50dp"
+        android:text="Back"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/browse" />
+
+    <ListView
+        android:id="@+id/browseSongs"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="100dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/browse"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -183,19 +223,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/randomize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Randomize"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/browse"
-        app:layout_constraintVertical_bias="0.0"
-        android:backgroundTint="@color/green"
-        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
