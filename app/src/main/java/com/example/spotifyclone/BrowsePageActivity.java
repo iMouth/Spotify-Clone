@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,7 @@ import java.util.Set;
 public class BrowsePageActivity extends AppCompatActivity {
 
     private static List<String> genres = new ArrayList<>();
+    private static List<String> colors = new ArrayList<>();
     private static String token;
     private static Player player;
 
@@ -39,30 +41,28 @@ public class BrowsePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_page);
         setGenres();
+        setColors();
         setButtons();
         Bundle extras = getIntent().getExtras();
         player = (Player) extras.get("player");
         token = player.getToken();
+        Button random = findViewById(R.id.randomize);
+        random.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { randomize(); }});
     }
 
     public void setButtons() {
-        Collections.shuffle(genres);
-        Button genre1 = findViewById(R.id.genre1);
-        Button genre2 = findViewById(R.id.genre2);
-        Button genre3 = findViewById(R.id.genre3);
-        Button genre4 = findViewById(R.id.genre4);
-        genre1.setText(genres.get(0));
-        genre2.setText(genres.get(1));
-        genre3.setText(genres.get(2));
-        genre4.setText(genres.get(3));
-        buttonClick(genre1);
-        buttonClick(genre2);
-        buttonClick(genre3);
-        buttonClick(genre4);
+        randomize();
+        buttonClick(findViewById(R.id.genre1));
+        buttonClick(findViewById(R.id.genre2));
+        buttonClick(findViewById(R.id.genre3));
+        buttonClick(findViewById(R.id.genre4));
     }
 
-    public void randomize(View view) {
+    public void randomize() {
         Collections.shuffle(genres);
+        Collections.shuffle(colors);
         Button genre1 = findViewById(R.id.genre1);
         Button genre2 = findViewById(R.id.genre2);
         Button genre3 = findViewById(R.id.genre3);
@@ -71,6 +71,10 @@ public class BrowsePageActivity extends AppCompatActivity {
         genre2.setText(genres.get(1));
         genre3.setText(genres.get(2));
         genre4.setText(genres.get(3));
+        genre1.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colors.get(0))));
+        genre2.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colors.get(1))));
+        genre3.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colors.get(2))));
+        genre4.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colors.get(3))));
     }
 
     public void buttonClick(Button genre) {
@@ -123,7 +127,27 @@ public class BrowsePageActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void setColors() {
+        try {
+            InputStream f = getApplicationContext().getAssets().open("colors.txt");
+            BufferedReader read = new BufferedReader(new InputStreamReader(f));
+            String line = read.readLine();
+            while (line != null) {
+                String[] getHex = line.split("#");
+                String hex = getHex[1];
+                colors.add("#" + hex);
+                line = read.readLine();
+            }
+            read.close();
+        } catch (FileNotFoundException e) {
+
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public JSONObject getSongs(String search) {
