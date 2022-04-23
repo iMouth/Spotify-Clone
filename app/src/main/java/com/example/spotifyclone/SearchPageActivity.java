@@ -37,16 +37,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchPageActivity extends AppCompatActivity {
-    private static final String CLIENT_ID = "203ce3a5264842a68daf7c3b22e6e803";
-    private static final String CLIENT_SECRET = "b68c98da213a4cebb4ea7e18bab55bc4";
-    private static final String REDIRECT_URI = "http://com.example.spotifyclone/callback";
     private static String choice = "artist";
-    private static SpotifyAppRemote remote;
     private static List<String> songListURI = new ArrayList<String>();
     private static List<String> songListName = new ArrayList<String>();
     private static String search;
-    private static final int REQUEST_CODE = 1337;
     private static String token;
+    private static Player player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,70 +52,11 @@ public class SearchPageActivity extends AppCompatActivity {
         Button artistBtn = findViewById(R.id.artist);
         setButtons(songBtn, artistBtn, "song");
         setButtons(artistBtn, songBtn, "artist");
-        setToken();
-        setRemote();
+        Bundle extras = getIntent().getExtras();
+        player = (Player) extras.get("player");
+        token = player.getToken();
     }
 
-    public void setToken() {
-        // Gets token for API Calls
-        AuthorizationRequest.Builder builder =
-                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
-
-        builder.setScopes(new String[]{"streaming"});
-        AuthorizationRequest request = builder.build();
-
-        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
-    }
-
-    public void setRemote() {
-        ConnectionParams connectionParams =
-            new ConnectionParams.Builder(CLIENT_ID)
-                    .setRedirectUri(REDIRECT_URI)
-                    .showAuthView(true)
-                    .build();
-
-        // Sets up remote controller for spotify
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
-
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        remote = spotifyAppRemote;
-                        Log.d("MainActivity", "Connected! Yay!");
-
-                        // Now you can start interacting with App Remote
-                        //connected();
-                    }
-
-                    public void onFailure(Throwable throwable) {
-                        Log.e("MyActivity", throwable.getMessage(), throwable);
-                    }
-                });
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-            AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
-
-            switch (response.getType()) {
-                // Response was successful and contains auth token
-                case TOKEN:
-                    token = response.getAccessToken();
-                    break;
-
-                // Auth flow returned an error
-                case ERROR:
-                    Log.d("Auth", "Error Auth");
-                    break;
-
-                // Most likely auth flow was cancelled
-                default:
-                    Log.d("Auth", "Canceled Auth");
-            }
-        }
-    }
 
     private void setButtons(Button change, Button reset, String choiceUser) {
         change.setOnClickListener(new View.OnClickListener() {
@@ -191,23 +128,22 @@ public class SearchPageActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        setList(songObj);
+    }
+
+    public void setList(JSONObject songObj) {
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(this, R.layout.song_row, songListName);
         ListView lw = findViewById(R.id.listOfSongs);
         lw.setAdapter(itemsAdapter);
-//        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                remote.getPlayerApi().play(songListURI.get(position));
-//            }
-//        });
-//        itemsAdapter.notifyDataSetChanged();
+        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO: At the song to the list of library songs from player.addSong with needed information
+            }
+        });
+        itemsAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        SpotifyAppRemote.disconnect(remote);
-    }
 
 
     public void openHomePage(View v) {
