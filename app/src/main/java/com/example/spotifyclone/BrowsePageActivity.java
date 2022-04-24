@@ -28,11 +28,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class BrowsePageActivity extends AppCompatActivity {
 
@@ -40,8 +42,8 @@ public class BrowsePageActivity extends AppCompatActivity {
     private static List<String> colors = new ArrayList<>();
     private static String token;
     private static Player player;
-    private static List<String> songListURI = new ArrayList<String>();
     private static List<String> songListName = new ArrayList<String>();
+    private static HashMap<String, HashMap<String, String>> songMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,14 +116,19 @@ public class BrowsePageActivity extends AppCompatActivity {
     public void updateUI(JSONObject songObj) {
         try {
             songListName.clear();
-            songListURI.clear();
             JSONArray items = songObj.getJSONObject("tracks").getJSONArray("items");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject trackObj = items.getJSONObject(i);
-                String uri = trackObj.getString("uri");
                 String name = trackObj.getString("name");
-                songListURI.add(uri);
                 songListName.add(name);
+                String picture = trackObj.getJSONObject("album").getJSONArray("images").getJSONObject(2).getString("url");
+                String artist = trackObj.getJSONArray("artists").getJSONObject(0).getString("name");
+                String uri = trackObj.getString("uri");
+                HashMap<String, String> info = new HashMap<>();
+                info.put("uri", uri);
+                info.put("picture", picture);
+                info.put("artist", artist);
+                songMap.put(name, info);
             }
 
         } catch (JSONException e) {
@@ -138,7 +145,8 @@ public class BrowsePageActivity extends AppCompatActivity {
         lw.setAdapter(itemsAdapter);
         lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO: At the song to the list of library songs from player.addSong with needed information
+                String name = songListName.get(position);
+                player.addSong(name, songMap.get(name));
             }
         });
         itemsAdapter.notifyDataSetChanged();
@@ -227,26 +235,31 @@ public class BrowsePageActivity extends AppCompatActivity {
 
     public void openHomePage(View v) {
         Intent homePageIntent = new Intent(this, HomePageActivity.class);
+        homePageIntent.putExtra("player", player);
         startActivity(homePageIntent);
     }
 
     public void openBrowsePage(View v) {
         Intent browsePageIntent = new Intent(this, BrowsePageActivity.class);
+        browsePageIntent.putExtra("player", player);
         startActivity(browsePageIntent);
     }
 
     public void openSearchPage(View v) {
         Intent searchPageIntent = new Intent(this, SearchPageActivity.class);
+        searchPageIntent.putExtra("player", player);
         startActivity(searchPageIntent);
     }
 
     public void openMyLibraryPage(View v) {
         Intent myLibraryPageIntent = new Intent(this, MyLibraryPageActivity.class);
+        myLibraryPageIntent.putExtra("player", player);
         startActivity(myLibraryPageIntent);
     }
 
     public void openNowPlayingPage(View v) {
         Intent nowPlayingPageIntent = new Intent(this, NowPlayingPageActivity.class);
+        nowPlayingPageIntent.putExtra("player", player);
         startActivity(nowPlayingPageIntent);
     }
 
