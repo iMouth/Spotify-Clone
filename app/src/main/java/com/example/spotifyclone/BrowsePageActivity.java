@@ -10,7 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -147,6 +151,13 @@ public class BrowsePageActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = songListName.get(position);
                 player.addSong(name, songMap.get(name));
+                TextView songNameTextView = findViewById(R.id.songName);
+                TextView artistNameTextView = findViewById(R.id.artistName);
+                ImageView albumCoverImageView = findViewById(R.id.albumCoverImage);
+                songNameTextView.setText(name);
+                artistNameTextView.setText(songMap.get(name).get("artist"));
+                System.out.println(songMap.get(name).get("picture"));
+                Picasso.get().load(songMap.get(name).get("picture")).into(albumCoverImageView);
             }
         });
         itemsAdapter.notifyDataSetChanged();

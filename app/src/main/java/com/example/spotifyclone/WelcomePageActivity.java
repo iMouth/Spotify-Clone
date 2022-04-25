@@ -21,7 +21,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 public class WelcomePageActivity extends AppCompatActivity {
-    private static final String CLIENT_ID = "eb56514e9b9f49a3addef0fb8da5d279";
+    private static final String CLIENT_ID = "203ce3a5264842a68daf7c3b22e6e803";
     private static final String REDIRECT_URI = "http://com.example.spotifyclone/callback";
     private static SpotifyAppRemote remote;
     private static String token;
@@ -93,7 +93,9 @@ public class WelcomePageActivity extends AppCompatActivity {
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
-
+            System.out.println("response is: " + response);
+            System.out.println("token is: " + AuthorizationResponse.Type.TOKEN);
+            System.out.println("type is: " + response.getType());
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:

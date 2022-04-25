@@ -42,6 +42,7 @@ public class Player implements Serializable {
     }
 
     public void playSong(String name) {
+        System.out.println("uri is: " + songs.get(name).get("uri"));
         remote.getPlayerApi().play(songs.get(name).get("uri"));
     }
 
