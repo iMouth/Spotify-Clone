@@ -46,5 +46,17 @@ public class Player implements Serializable {
         remote.getPlayerApi().play(songs.get(name).get("uri"));
     }
 
+    public String getCurrentSongName() {
+        return songs.firstKey();
+    }
+
+    public HashMap<String, String> getInfo(String name) {
+        return songs.get(name);
+    }
+
+//    public String getCurrentArtistName() {
+//        return songs;
+//    }
+
     // TODO: If a song is finished play the next song
 }

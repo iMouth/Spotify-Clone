@@ -100,6 +100,7 @@ public class WelcomePageActivity extends AppCompatActivity {
                 // Response was successful and contains auth token
                 case TOKEN:
                     token = response.getAccessToken();
+                    System.out.println("token: " + token);
                     break;
 
                 // Auth flow returned an error

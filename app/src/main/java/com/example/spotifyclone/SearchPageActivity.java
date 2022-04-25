@@ -150,6 +150,7 @@ public class SearchPageActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = songListName.get(position);
                 player.addSong(name, songMap.get(name));
+                //player.playSong(name);
                 TextView songNameTextView = findViewById(R.id.songName);
                 TextView artistNameTextView = findViewById(R.id.artistName);
                 ImageView albumCoverImageView = findViewById(R.id.albumCoverImage);
