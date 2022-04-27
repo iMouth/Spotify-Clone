@@ -2,12 +2,19 @@ package com.example.spotifyclone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Path;
+import android.graphics.PathMeasure;
+import android.graphics.RectF;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
@@ -32,6 +39,7 @@ public class WelcomePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
         Bundle extras = getIntent().getExtras();
+        moveLogo();
     }
 
     @Override
@@ -113,5 +121,30 @@ public class WelcomePageActivity extends AppCompatActivity {
                     Log.d("Auth", "Canceled Auth");
             }
         }
+    }
+
+    public void moveLogo() {
+        ImageView spotifyLogo = findViewById(R.id.spotifyLogo);
+        Path path = new Path();
+        RectF circle = new RectF(-200f, -100f, 200f, 300f);
+        path.arcTo(circle, 0, 180);
+        path.arcTo(circle, 180, 180);
+        final PathMeasure pathMeasure = new PathMeasure(path, false);
+        ValueAnimator animator = ValueAnimator.ofFloat(0, pathMeasure.getLength());
+        final float[] pos = new float[2];
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float v = (float) animation.getAnimatedValue();
+                pathMeasure.getPosTan(v, pos, null);
+                spotifyLogo.setTranslationX(pos[0]);
+                spotifyLogo.setTranslationY(pos[1]);
+            }
+        });
+        animator.setDuration(3000);
+        animator.setRepeatMode(ValueAnimator.RESTART);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
     }
 }
