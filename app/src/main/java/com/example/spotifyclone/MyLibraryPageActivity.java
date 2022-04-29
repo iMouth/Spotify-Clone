@@ -41,27 +41,37 @@ public class MyLibraryPageActivity extends AppCompatActivity {
         player = (Player) extras.get("player");
         getContacts();
         songs = player.getSongs();
+        setButtons();
+        setupAdapter(findViewById(R.id.contacts), contacts, contactsAdapter);
+        setupAdapter(findViewById(R.id.librarySongs), songs, songsAdapter);
+    }
+
+    public void setButtons() {
+        Button shuffle = findViewById(R.id.shufflePlay);
         Button share = findViewById(R.id.shareBtn);
         ListView lvContacts = findViewById(R.id.contacts);
         Button back = findViewById(R.id.libraryBack);
         ListView lvSongs = findViewById(R.id.librarySongs);
-        setupAdapter(lvContacts, contacts, contactsAdapter);
-        setupAdapter(lvSongs, songs, songsAdapter);
         lvSongs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String songName= (String) parent.getItemAtPosition(position-1);
+                String songName= (String) parent.getItemAtPosition(position);
                 player.playSong(songName);}});
         lvContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onShareClick(position); }});
+                onShareClick(position+1); }});
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changeView(); }});
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changeView(); }});
+        shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player.shuffleSongs();
+                songsAdapter.notifyDataSetChanged(); }});
     }
 
     public void changeView() {
@@ -101,6 +111,7 @@ public class MyLibraryPageActivity extends AppCompatActivity {
         if(cursorEmail.moveToFirst()) {
             email = cursorEmail.getString(cursorEmail.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
         }
+
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("vnd.android.cursor.dir/email");
         StringBuilder sb = new StringBuilder();
@@ -108,6 +119,7 @@ public class MyLibraryPageActivity extends AppCompatActivity {
             sb.append(s);
             sb.append("\n");
         }
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Spotify Playlist");
         intent.putExtra(Intent.EXTRA_TEXT, sb.toString());
         intent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {email});
         startActivity(intent);
