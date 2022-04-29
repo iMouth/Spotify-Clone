@@ -91,7 +91,7 @@
             android:background="@drawable/minus_icon"></Button>
 
         <Button
-            android:id="@+id/backSongButton"
+            android:id="@+id/prevSongButton"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -103,10 +103,12 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:background="@drawable/play_icon"
-            android:onClick="changeIcon"></Button>
+            android:onClick="changeIcon"
+            android:text="play"
+            android:textScaleX="0"></Button>
 
         <Button
-            android:id="@+id/skipSongButton"
+            android:id="@+id/nextSongButton"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_weight="2"

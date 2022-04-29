@@ -15,13 +15,14 @@ import java.util.HashMap;
 public class NowPlayingPageActivity extends AppCompatActivity {
 
     private static Player player;
-    int playPauseCounter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_now_playing_page);
         Bundle extras = getIntent().getExtras();
         player = (Player) extras.get("player");
+        player.act = this;
+        player.setNowPlaying();
         TextView songNameTextView = findViewById(R.id.songName);
         songNameTextView.setText(player.getCurrentSongName());
         String name = player.getCurrentSongName();
@@ -31,23 +32,38 @@ public class NowPlayingPageActivity extends AppCompatActivity {
         artistNameTextView.setText(info.get("artist"));
         ImageView albumCoverImageView = findViewById(R.id.albumCoverImage);
         Picasso.get().load(info.get("picture")).into(albumCoverImageView);
+        Button playPause = findViewById(R.id.playPauseSongButton);
+        playPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { changePlay(playPause); }});
+        if (player.playing) changePlay(playPause);
+        Button prev = findViewById(R.id.prevSongButton);
+        Button next = findViewById(R.id.nextSongButton);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { player.next(); }});
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { player.previous(); }});
     }
 
-    public void changeIcon(View v) {
-        Button playPauseButton = findViewById(R.id.playPauseSongButton);
-        switch (playPauseCounter) {
-            case (0):
-                playPauseButton.setBackgroundResource(R.drawable.pause_icon);
-                playPauseCounter = 1;
-                break;
-            case (1):
-                playPauseButton.setBackgroundResource(R.drawable.play_icon);
-                playPauseCounter = 0;
-                break;
+    public void changePlay(Button button) {
+        if (!player.songList.isEmpty()) {
+            if (button.getText().equals("play")) {
+                button.setText("pause");
+                button.setBackgroundResource(R.drawable.pause_icon);
+                player.resume();
+            } else {
+                button.setText("play");
+                button.setBackgroundResource(R.drawable.play_icon);
+                player.pause();
+            }
+            button.setTextScaleX(0);
         }
     }
 
     public void goBack(View v) {
+        player.setNowPlaying();
         this.finish();
     }
 }

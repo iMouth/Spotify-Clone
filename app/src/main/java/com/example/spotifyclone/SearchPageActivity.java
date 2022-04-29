@@ -58,8 +58,31 @@ public class SearchPageActivity extends AppCompatActivity {
         setButtons(artistBtn, songBtn, "artist");
         Bundle extras = getIntent().getExtras();
         player = (Player) extras.get("player");
+        player.act = this;
+        player.setNowPlaying();
         token = player.getToken();
+        Button playPause = findViewById(R.id.playPauseSongButton);
+        playPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { changePlay(playPause); }});
+        if (player.playing) changePlay(playPause);
     }
+
+    public void changePlay(Button button) {
+        if (!player.songList.isEmpty()) {
+            if (button.getText().equals("play")) {
+                button.setText("pause");
+                button.setBackgroundResource(R.drawable.pause_icon);
+                player.resume();
+            } else {
+                button.setText("play");
+                button.setBackgroundResource(R.drawable.play_icon);
+                player.pause();
+            }
+            button.setTextScaleX(0);
+        }
+    }
+
 
 
     private void setButtons(Button change, Button reset, String choiceUser) {

@@ -108,7 +108,6 @@
         app:layout_constraintTop_toBottomOf="@+id/browse"
         app:layout_constraintVertical_bias="0.0"
         android:backgroundTint="@color/green"
-
         />
 
 
@@ -167,6 +166,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/songName"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_marginTop="5dp"
@@ -175,6 +175,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/artistName"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:text="Artist Name"
@@ -183,10 +184,14 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/playPauseSongButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="0.05"
-                android:background="@drawable/play_icon" />
+                android:background="@drawable/play_icon"
+                android:textScaleX="0"
+                android:text="play"
+                />
 
         </LinearLayout>
 

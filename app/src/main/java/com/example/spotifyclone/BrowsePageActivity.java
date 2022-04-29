@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
@@ -58,15 +59,38 @@ public class BrowsePageActivity extends AppCompatActivity {
         setButtons();
         Bundle extras = getIntent().getExtras();
         player = (Player) extras.get("player");
+        player.act = this;
+        player.setNowPlaying();
         token = player.getToken();
         Button random = findViewById(R.id.randomize);
+        Button back = findViewById(R.id.back);
         random.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { randomize(); }});
-        Button back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changeDisplay(); }});
+        Button playPause = findViewById(R.id.playPauseSongButton);
+        if (player.playing) changePlay(playPause);
+        playPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { changePlay(playPause); }});
+    }
+
+
+    public void changePlay(Button button) {
+        if (!player.songList.isEmpty()) {
+            if (button.getText().equals("play")) {
+                button.setText("pause");
+                button.setBackgroundResource(R.drawable.pause_icon);
+                player.resume();
+            } else {
+                button.setText("play");
+                button.setBackgroundResource(R.drawable.play_icon);
+                player.pause();
+            }
+            button.setTextScaleX(0);
+        }
     }
 
     public void setButtons() {
@@ -151,12 +175,6 @@ public class BrowsePageActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = songListName.get(position);
                 player.addSong(name, songMap.get(name));
-//                TextView songNameTextView = findViewById(R.id.songName);
-//                TextView artistNameTextView = findViewById(R.id.artistName);
-//                ImageView albumCoverImageView = findViewById(R.id.albumCoverImage);
-//                songNameTextView.setText(name);
-//                artistNameTextView.setText(songMap.get(name).get("artist"));
-//                Picasso.get().load(songMap.get(name).get("picture")).into(albumCoverImageView);
             }
         });
         itemsAdapter.notifyDataSetChanged();

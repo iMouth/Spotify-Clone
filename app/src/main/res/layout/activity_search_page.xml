@@ -130,10 +130,13 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/playPauseSongButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="0.05"
-                android:background="@drawable/play_icon" />
+                android:background="@drawable/play_icon"
+                android:text="play"
+                android:textScaleX="0"/>
 
         </LinearLayout>
 
