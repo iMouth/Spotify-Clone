@@ -5,6 +5,7 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +14,14 @@ import java.util.TreeMap;
 public class Player implements Serializable {
     private static SpotifyAppRemote remote;
     private static TreeMap<String, HashMap<String, String>> songs;
+    private static ArrayList<String> songList;
     private static String token;
 
     public Player(SpotifyAppRemote remote, String token) {
         this.remote = remote;
         songs = new TreeMap<>();
         this.token = token;
+        songList = getSongs();
     }
 
     public String getToken() {
@@ -54,9 +57,9 @@ public class Player implements Serializable {
         return songs.get(name);
     }
 
-//    public String getCurrentArtistName() {
-//        return songs;
-//    }
+    public void shuffleSongs() {
+        Collections.shuffle(songList);
+    }
 
     // TODO: If a song is finished play the next song
 }

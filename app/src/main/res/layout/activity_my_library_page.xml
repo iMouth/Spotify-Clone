@@ -30,21 +30,71 @@
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/startExploringButton"
+    <LinearLayout
+        android:id="@+id/libraryShuffleShare"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Shuffle Play"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/green"
-        android:background="@drawable/rounded_btn"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:onClick="openHomePage"
-        app:layout_constraintTop_toBottomOf="@id/myLibraryTitle"
+        android:layout_height="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myLibraryTitle">
+
+        <Button
+            android:id="@+id/shufflePlay"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight=".5"
+            android:background="@drawable/rounded_btn"
+            android:backgroundTint="@color/green"
+            android:onClick="openHomePage"
+            android:text="Shuffle Play"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/shareBtn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight=".5"
+            android:background="@drawable/rounded_btn"
+            android:backgroundTint="@color/green"
+            android:text="Share"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/libraryBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationY="-50dp"
+        android:text="Back"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/libraryShuffleShare" />
+
+    <ListView
+        android:id="@+id/librarySongs"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        app:layout_constraintTop_toBottomOf="@+id/myLibraryTitle"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="100dp"
+        />
+
+    <ListView
+        android:id="@+id/contacts"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        app:layout_constraintTop_toBottomOf="@+id/myLibraryTitle"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="100dp"
+        android:visibility="gone"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 public class WelcomePageActivity extends AppCompatActivity {
-    private static final String CLIENT_ID = "203ce3a5264842a68daf7c3b22e6e803";
+    private static final String CLIENT_ID = "eb56514e9b9f49a3addef0fb8da5d279";
     private static final String REDIRECT_URI = "http://com.example.spotifyclone/callback";
     private static SpotifyAppRemote remote;
     private static String token;

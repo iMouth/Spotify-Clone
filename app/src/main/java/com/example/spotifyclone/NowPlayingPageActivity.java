@@ -31,7 +31,6 @@ public class NowPlayingPageActivity extends AppCompatActivity {
         artistNameTextView.setText(info.get("artist"));
         ImageView albumCoverImageView = findViewById(R.id.albumCoverImage);
         Picasso.get().load(info.get("picture")).into(albumCoverImageView);
-
     }
 
     public void changeIcon(View v) {
