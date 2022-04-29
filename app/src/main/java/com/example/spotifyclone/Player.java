@@ -57,6 +57,11 @@ public class Player implements Serializable {
         songs.remove(name);
         if (songList.isEmpty()) {
             pause();
+            Button btn = act.findViewById(R.id.playPauseSongButton);
+            if ( btn.getText().equals("pause")) {
+                btn.setText("play");
+                btn.setBackgroundResource(R.drawable.play_icon);
+            }
         } else if (curSong == name) {
             curSong = songList.get(0);
             playSong(curSong);
