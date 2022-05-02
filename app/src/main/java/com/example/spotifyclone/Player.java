@@ -130,11 +130,15 @@ public class Player implements Serializable {
     }
 
     public void setNowPlaying() {
-        act.findViewById(R.id.nowPlayingText).setVisibility(View.GONE);
-        act.findViewById(R.id.playPauseSongButton).setVisibility(View.GONE);
-        if (act != null && !songs.isEmpty()) {
+        if (act.findViewById(R.id.nowPlayingText) != null) {
+            act.findViewById(R.id.nowPlayingText).setVisibility(View.GONE);
+            act.findViewById(R.id.playPauseSongButton).setVisibility(View.GONE);
+        } else if (act.findViewById(R.id.nowPlayingText) != null ) {
+            act.findViewById(R.id.playPauseSongButton).setVisibility(View.VISIBLE);
             act.findViewById(R.id.nowPlayingText).setVisibility(View.VISIBLE);
             act.findViewById(R.id.playPauseSongButton).setVisibility(View.VISIBLE);
+        }
+        if (act != null && !songs.isEmpty()) {
             TextView songNameTextView = act.findViewById(R.id.songName);
             TextView artistNameTextView = act.findViewById(R.id.artistName);
             ImageView albumCoverImageView = act.findViewById(R.id.albumCoverImage);
