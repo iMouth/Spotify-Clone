@@ -47,6 +47,7 @@ public class Player implements Serializable {
             btn.setText("pause");
             btn.setBackgroundResource(R.drawable.pause_icon);
         }
+        if (!songs.isEmpty()) { act.findViewById(R.id.nowPlayingText).setVisibility(View.VISIBLE); }
     }
 
     public ArrayList<String> getSongs() { return songList; }
@@ -64,6 +65,11 @@ public class Player implements Serializable {
         } else if (curSong == name) {
             curSong = songList.get(0);
             playSong(curSong);
+        }
+        if (songs.isEmpty()) {
+            act.findViewById(R.id.nowPlayingText).setVisibility(View.GONE);
+            act.findViewById(R.id.playPauseSongButton).setVisibility(View.GONE);
+            act.findViewById(R.id.albumCoverImage).setVisibility(View.GONE);
         }
     }
 
@@ -124,7 +130,11 @@ public class Player implements Serializable {
     }
 
     public void setNowPlaying() {
+        act.findViewById(R.id.nowPlayingText).setVisibility(View.GONE);
+        act.findViewById(R.id.playPauseSongButton).setVisibility(View.GONE);
         if (act != null && !songs.isEmpty()) {
+            act.findViewById(R.id.nowPlayingText).setVisibility(View.VISIBLE);
+            act.findViewById(R.id.playPauseSongButton).setVisibility(View.VISIBLE);
             TextView songNameTextView = act.findViewById(R.id.songName);
             TextView artistNameTextView = act.findViewById(R.id.artistName);
             ImageView albumCoverImageView = act.findViewById(R.id.albumCoverImage);

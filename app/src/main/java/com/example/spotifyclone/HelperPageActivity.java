@@ -45,8 +45,15 @@ public class HelperPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) { changePlay(playPause); }});
 
-        setNowPlaying();
         if (player.playing) changePlay(playPause);
+        if (!player.songs.isEmpty()) {
+            findViewById(R.id.nowPlayingText).setVisibility(View.VISIBLE);
+            findViewById(R.id.playPauseSongButton).setVisibility(View.VISIBLE);
+            setNowPlaying();
+        } else {
+            findViewById(R.id.nowPlayingText).setVisibility(View.GONE);
+            findViewById(R.id.playPauseSongButton).setVisibility(View.GONE);
+        }
     }
 
     public void setNowPlaying() {
