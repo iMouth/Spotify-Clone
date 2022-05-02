@@ -52,6 +52,7 @@ public class WelcomePageActivity extends AppCompatActivity {
         setToken();
         setRemote();
         Button btn = findViewById(R.id.startExploringButton);
+        btn.setVisibility(View.VISIBLE);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

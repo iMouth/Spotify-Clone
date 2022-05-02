@@ -27,6 +27,7 @@ public class NowPlayingPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        container.removeAllViews();
         View view = inflater.inflate(R.layout.fragment_now_playing_page, container, false);
 
         Bundle bundle = this.getArguments();
@@ -55,6 +56,10 @@ public class NowPlayingPageFragment extends Fragment {
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { player.previous(); }});
+        Button back = view.findViewById(R.id.smallBackArrow);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { goBack(v); }});
         return view;
     }
 
@@ -75,6 +80,13 @@ public class NowPlayingPageFragment extends Fragment {
 
     public void goBack(View v) {
         player.setNowPlaying();
-        getActivity().finish();
+        HomePageFragment frag = new HomePageFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("player", player);
+        frag.setArguments(args);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.now_playing_page_layout, frag)
+                .addToBackStack(null)
+                .commit();
     }
 }

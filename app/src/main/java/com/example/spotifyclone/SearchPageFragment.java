@@ -52,7 +52,8 @@ public class SearchPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         view = inflater.inflate(R.layout.fragment_search_page, container, false);
+        container.removeAllViews();
+        view = inflater.inflate(R.layout.fragment_search_page, container, false);
 
         Button songBtn = view.findViewById(R.id.song);
         Button artistBtn = view.findViewById(R.id.artist);
@@ -67,7 +68,7 @@ public class SearchPageFragment extends Fragment {
         setOnClick(browse, new BrowsePageFragment());
         setOnClick(search, new SearchPageFragment());
         setOnClick(library, new MyLibraryPageFragment());
-        LinearLayout ll = getActivity().findViewById(R.id.nowPlayingText);
+        LinearLayout ll = view.findViewById(R.id.nowPlayingText);
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { openNowPlayingPage(v); }});

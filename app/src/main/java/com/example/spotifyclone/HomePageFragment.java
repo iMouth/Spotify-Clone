@@ -35,6 +35,7 @@ public class HomePageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        container.removeAllViews();
         view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
         Button home = view.findViewById(R.id.homePageButton);

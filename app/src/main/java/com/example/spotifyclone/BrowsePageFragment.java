@@ -52,6 +52,7 @@ public class BrowsePageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        container.removeAllViews();
         view = inflater.inflate(R.layout.fragment_browse_page, container, false);
         setGenres();
         setColors();
