@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Path;
@@ -34,6 +35,7 @@ public class WelcomePageActivity extends AppCompatActivity {
     private static SpotifyAppRemote remote;
     private static String token = "BQBbyy6xhfFoLaZ-bhedf9pwlChh5LOebbTNE1BaitKj7wzlhkQk6Xd-m6KVVB5vdmZLAMXQBpX8TnbkGW4-fyaSc74Vc56pWSV7_K0Hg5A1zfk4LNtgLTbBuCsSQiUFeRbfDIO3RyiWDw6mNcSIuaJv9sZaRbQ7w7tSPAiOzu-nfrOrDgcSQx65bJUDaIfhhu31Ft3jLKIe3BjKsSiwRSHMVDpUL79qq_L0-gWhYlcaDPi3lSn8YDWP6TkCNNSjF8YtYOaMxyuXXN3UDGU6EtLE4Sw";
     private static final int REQUEST_CODE = 1337;
+    private static Activity act;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class WelcomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_page);
         Bundle extras = getIntent().getExtras();
         moveLogo();
+        act = this;
     }
 
     @Override
@@ -52,6 +55,7 @@ public class WelcomePageActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn.setVisibility(View.GONE);
                 Player player = new Player(remote, token);
                 HomePageFragment homePageFragment = new HomePageFragment();
                 Bundle args = new Bundle();
@@ -61,9 +65,6 @@ public class WelcomePageActivity extends AppCompatActivity {
                         .replace(R.id.welcome_page_layout, homePageFragment)
                         .addToBackStack(null)
                         .commit();
-//                Intent home = new Intent(WelcomePageActivity.this, HomePageActivity.class);
-//                home.putExtra("player", player);
-//                startActivity(home);
             }
         });
     }
@@ -96,10 +97,8 @@ public class WelcomePageActivity extends AppCompatActivity {
         // Gets token for API Calls
         AuthorizationRequest.Builder builder =
                 new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
-
         builder.setScopes(new String[]{"streaming"});
         AuthorizationRequest request = builder.build();
-
         AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
 
@@ -110,14 +109,10 @@ public class WelcomePageActivity extends AppCompatActivity {
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
-            System.out.println("response is: " + response);
-            System.out.println("token is: " + AuthorizationResponse.Type.TOKEN);
-            System.out.println("type is: " + response.getType());
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
                     token = response.getAccessToken();
-                    System.out.println("token: " + token);
                     break;
 
                 // Auth flow returned an error

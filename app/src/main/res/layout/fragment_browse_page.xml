@@ -163,7 +163,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8"
-                android:onClick="openNowPlayingPage"
                 android:orientation="vertical">
 
                 <TextView
@@ -210,7 +209,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/home_icon"
-                android:onClick="openHomePage"></Button>
+                ></Button>
 
             <Button
                 android:id="@+id/browsePageButton"
@@ -218,7 +217,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/browse_icon"
-                android:onClick="openBrowsePage"></Button>
+              ></Button>
 
             <Button
                 android:id="@+id/searchPageButton"
@@ -226,7 +225,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/search_icon"
-                android:onClick="openSearchPage"></Button>
+                ></Button>
 
             <Button
                 android:id="@+id/myLibraryButton"
@@ -234,7 +233,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/my_library_icon"
-                android:onClick="openMyLibraryPage"></Button>
+                ></Button>
 
         </LinearLayout>
 

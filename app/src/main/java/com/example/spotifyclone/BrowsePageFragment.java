@@ -7,12 +7,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -40,6 +42,7 @@ public class BrowsePageFragment extends Fragment {
     private static HashMap<String, HashMap<String, String>> songMap = new HashMap<>();
     private static String token;
     private static Player player;
+    private static View view;
 
     public BrowsePageFragment() {
         // Required empty public constructor
@@ -49,16 +52,30 @@ public class BrowsePageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_browse_page, container, false);
-
+        view = inflater.inflate(R.layout.fragment_browse_page, container, false);
         setGenres();
         setColors();
         setButtons();
         Bundle bundle = this.getArguments();
         player = (Player) bundle.get("player");
-        player.act = this;
+        player.act = view;
         player.setNowPlaying();
         token = player.getToken();
+
+        Button home = view.findViewById(R.id.homePageButton);
+        Button browse = view.findViewById(R.id.browsePageButton);
+        Button search = view.findViewById(R.id.searchPageButton);
+        Button library = view.findViewById(R.id.myLibraryButton);
+        setOnClick(home, new HomePageFragment());
+        setOnClick(browse, new BrowsePageFragment());
+        setOnClick(search, new SearchPageFragment());
+        setOnClick(library, new MyLibraryPageFragment());
+        LinearLayout ll = view.findViewById(R.id.nowPlayingText);
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { openNowPlayingPage(v); }});
+
+
         Button random = view.findViewById(R.id.randomize);
         Button back = view.findViewById(R.id.back);
         random.setOnClickListener(new View.OnClickListener() {
@@ -92,19 +109,19 @@ public class BrowsePageFragment extends Fragment {
 
     public void setButtons() {
         randomize();
-        buttonClick(getActivity().findViewById(R.id.genre1));
-        buttonClick(getActivity().findViewById(R.id.genre2));
-        buttonClick(getActivity().findViewById(R.id.genre3));
-        buttonClick(getActivity().findViewById(R.id.genre4));
+        buttonClick(view.findViewById(R.id.genre1));
+        buttonClick(view.findViewById(R.id.genre2));
+        buttonClick(view.findViewById(R.id.genre3));
+        buttonClick(view.findViewById(R.id.genre4));
     }
 
     public void randomize() {
         Collections.shuffle(genres);
         Collections.shuffle(colors);
-        Button genre1 = getActivity().findViewById(R.id.genre1);
-        Button genre2 = getActivity().findViewById(R.id.genre2);
-        Button genre3 = getActivity().findViewById(R.id.genre3);
-        Button genre4 = getActivity().findViewById(R.id.genre4);
+        Button genre1 = view.findViewById(R.id.genre1);
+        Button genre2 = view.findViewById(R.id.genre2);
+        Button genre3 = view.findViewById(R.id.genre3);
+        Button genre4 = view.findViewById(R.id.genre4);
         genre1.setText(genres.get(0));
         genre2.setText(genres.get(1));
         genre3.setText(genres.get(2));
@@ -257,48 +274,19 @@ public class BrowsePageFragment extends Fragment {
         return null;
     }
 
-    public void openHomePage(View v) {
-        HomePageFragment homePageFragment = new HomePageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        homePageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.browse_page_layout, homePageFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void openBrowsePage(View v) {
-        BrowsePageFragment browsePageFragment = new BrowsePageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        browsePageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.browse_page_layout, browsePageFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void openSearchPage(View v) {
-        SearchPageFragment searchPageFragment = new SearchPageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        searchPageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.browse_page_layout, searchPageFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void openMyLibraryPage(View v) {
-        MyLibraryPageFragment myLibraryPageFragment = new MyLibraryPageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        myLibraryPageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.browse_page_layout, myLibraryPageFragment)
-                .addToBackStack(null)
-                .commit();
+    public void setOnClick(Button btn, Fragment frag) {
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putSerializable("player", player);
+                frag.setArguments(args);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.browse_page_layout, frag)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
     public void openNowPlayingPage(View v) {

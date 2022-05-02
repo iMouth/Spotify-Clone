@@ -31,24 +31,24 @@ public class NowPlayingPageFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         player = (Player) bundle.get("player");
-        player.act = this;
+        player.act = view;
         player.setNowPlaying();
-        TextView songNameTextView = getActivity().findViewById(R.id.songName);
+        TextView songNameTextView = view.findViewById(R.id.songName);
         songNameTextView.setText(player.getCurrentSongName());
         String name = player.getCurrentSongName();
         HashMap<String, String> info = player.getInfo(name);
         System.out.println("info is: " + info.get("artist"));
-        TextView artistNameTextView = getActivity().findViewById(R.id.artistName);
+        TextView artistNameTextView = view.findViewById(R.id.artistName);
         artistNameTextView.setText(info.get("artist"));
-        ImageView albumCoverImageView = getActivity().findViewById(R.id.albumCoverImage);
+        ImageView albumCoverImageView = view.findViewById(R.id.albumCoverImage);
         Picasso.get().load(info.get("picture")).into(albumCoverImageView);
-        Button playPause = getActivity().findViewById(R.id.playPauseSongButton);
+        Button playPause = view.findViewById(R.id.playPauseSongButton);
         playPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changePlay(playPause); }});
         if (player.playing) changePlay(playPause);
-        Button prev = getActivity().findViewById(R.id.prevSongButton);
-        Button next = getActivity().findViewById(R.id.nextSongButton);
+        Button prev =view.findViewById(R.id.prevSongButton);
+        Button next = view.findViewById(R.id.nextSongButton);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { player.next(); }});

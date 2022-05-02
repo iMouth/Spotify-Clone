@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ public class MyLibraryPageFragment extends Fragment {
     private static ArrayList<String> songs = new ArrayList<String>();;
     private static ArrayAdapter<String> contactsAdapter = null;
     private static ArrayAdapter<String> songsAdapter = null;
-    private static Activity act;
     private static int change = 0;
+    private static View view;
 
     public MyLibraryPageFragment() {
         // Required empty public constructor
@@ -37,17 +38,31 @@ public class MyLibraryPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_library_page, container, false);
+        view = inflater.inflate(R.layout.fragment_my_library_page, container, false);
 
         Bundle bundle = this.getArguments();
         player = (Player) bundle.get("player");
-        player.act = this;
+        player.act = view;
+
+        Button home = view.findViewById(R.id.homePageButton);
+        Button browse = view.findViewById(R.id.browsePageButton);
+        Button search = view.findViewById(R.id.searchPageButton);
+        Button library = view.findViewById(R.id.myLibraryButton);
+        setOnClick(home, new HomePageFragment());
+        setOnClick(browse, new BrowsePageFragment());
+        setOnClick(search, new SearchPageFragment());
+        setOnClick(library, new MyLibraryPageFragment());
+        LinearLayout ll = getActivity().findViewById(R.id.nowPlayingText);
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { openNowPlayingPage(v); }});
+
         player.setNowPlaying();
         getContacts();
         songs = player.getSongs();
-        setupAdapter(getActivity().findViewById(R.id.contacts), contacts, contactsAdapter);
-        setupAdapter(getActivity().findViewById(R.id.librarySongs), songs, songsAdapter);
-        Button playPause = getActivity().findViewById(R.id.playPauseSongButton);
+        setupAdapter(view.findViewById(R.id.contacts), contacts, contactsAdapter);
+        setupAdapter(view.findViewById(R.id.librarySongs), songs, songsAdapter);
+        Button playPause = view.findViewById(R.id.playPauseSongButton);
         playPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changePlay(playPause); }});
@@ -73,12 +88,12 @@ public class MyLibraryPageFragment extends Fragment {
     }
 
     public void setButtons() {
-        Button shuffle = getActivity().findViewById(R.id.shufflePlay);
-        Button share = getActivity().findViewById(R.id.shareBtn);
-        ListView lvContacts = getActivity().findViewById(R.id.contacts);
-        Button back = getActivity().findViewById(R.id.libraryBack);
-        ListView lvSongs = getActivity().findViewById(R.id.librarySongs);
-        Button edit = getActivity().findViewById(R.id.editSongs);
+        Button shuffle = view.findViewById(R.id.shufflePlay);
+        Button share = view.findViewById(R.id.shareBtn);
+        ListView lvContacts = view.findViewById(R.id.contacts);
+        Button back = view.findViewById(R.id.libraryBack);
+        ListView lvSongs = view.findViewById(R.id.librarySongs);
+        Button edit = view.findViewById(R.id.editSongs);
         lvSongs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -201,48 +216,19 @@ public class MyLibraryPageFragment extends Fragment {
         cursor.close();
     }
 
-    public void openHomePage(View v) {
-        HomePageFragment homePageFragment = new HomePageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        homePageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.my_library_page_layout, homePageFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void openBrowsePage(View v) {
-        BrowsePageFragment browsePageFragment = new BrowsePageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        browsePageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.my_library_page_layout, browsePageFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void openSearchPage(View v) {
-        SearchPageFragment searchPageFragment = new SearchPageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        searchPageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.my_library_page_layout, searchPageFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void openMyLibraryPage(View v) {
-        MyLibraryPageFragment myLibraryPageFragment = new MyLibraryPageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        myLibraryPageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.my_library_page_layout, myLibraryPageFragment)
-                .addToBackStack(null)
-                .commit();
+    public void setOnClick(Button btn, Fragment frag) {
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putSerializable("player", player);
+                frag.setArguments(args);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.my_library_page_layout, frag)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
     public void openNowPlayingPage(View v) {

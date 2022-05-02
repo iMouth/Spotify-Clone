@@ -79,7 +79,7 @@
                 android:layout_weight="0.8"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:onClick="openNowPlayingPage">
+               >
 
                 <TextView
                     android:id="@+id/songName"
@@ -124,7 +124,7 @@
                 android:layout_width="50dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openHomePage">
+                >
             </Button>
 
             <Button
@@ -133,7 +133,7 @@
                 android:layout_width="50dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openBrowsePage">
+               >
             </Button>
 
             <Button
@@ -142,7 +142,7 @@
                 android:layout_width="50dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openSearchPage">
+              >
             </Button>
 
             <Button
@@ -151,7 +151,7 @@
                 android:layout_width="50dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openMyLibraryPage">
+               >
             </Button>
 
         </LinearLayout>

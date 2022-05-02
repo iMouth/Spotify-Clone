@@ -48,7 +48,7 @@
             android:layout_weight=".5"
             android:background="@drawable/rounded_btn"
             android:backgroundTint="@color/green"
-            android:onClick="openHomePage"
+
             android:text="Shuffle Play"
             android:textColor="@color/white"
             android:textStyle="bold" />
@@ -80,14 +80,15 @@
 
     <Button
         android:id="@+id/editSongs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+      android:layout_margin="10dp"
         android:background="@drawable/rounded_btn"
         android:text="Edit"
         android:backgroundTint="@color/white"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toBottomOf="@+id/libraryShuffleShare" />
 
     <ListView
@@ -95,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         app:layout_constraintTop_toBottomOf="@+id/myLibraryTitle"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="180dp"
         android:layout_marginBottom="100dp"
         />
 
@@ -139,7 +140,7 @@
                 android:layout_weight="0.8"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:onClick="openNowPlayingPage">
+               >
 
                 <TextView
                     android:id="@+id/songName"
@@ -183,7 +184,7 @@
                 android:layout_width="50dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openHomePage">
+                >
             </Button>
 
             <Button
@@ -192,7 +193,7 @@
                 android:layout_width="50dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openBrowsePage">
+               >
             </Button>
 
             <Button
@@ -201,7 +202,7 @@
                 android:layout_width="50dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openSearchPage">
+               >
             </Button>
 
             <Button
@@ -210,7 +211,7 @@
                 android:layout_width="50dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:onClick="openMyLibraryPage">
+                >
             </Button>
 
         </LinearLayout>

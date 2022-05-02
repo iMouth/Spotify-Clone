@@ -2,6 +2,7 @@ package com.example.spotifyclone;
 
 
 import android.app.Activity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,10 +24,9 @@ public class Player implements Serializable {
     protected static TreeMap<String, HashMap<String, String>> songs = new TreeMap<>();
     protected static ArrayList<String> songList = new ArrayList<>();
     private static String token;
-    protected static MyLibraryPageFragment act;
+    protected static View act;
     private static String curSong;
     protected boolean playing = false;
-    private static int songPos = 0;
 
     public Player(SpotifyAppRemote remote, String token) {
         this.remote = remote;
@@ -42,7 +42,6 @@ public class Player implements Serializable {
         songs.put(name, info);
         songList.add(name);
         playSong(name);
-        songPos = songList.size() - 1;
         Button btn = act.findViewById(R.id.playPauseSongButton);
         if ( btn.getText().equals("play")) {
             btn.setText("pause");
@@ -108,8 +107,6 @@ public class Player implements Serializable {
     public void playSong(String name) {
         playing = true;
         curSong = name;
-        System.out.println(name);
-        System.out.println(songs.get(name));
         remote.getPlayerApi().play(songs.get(name).get("uri"));
         setNowPlaying();
     }

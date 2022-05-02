@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +42,7 @@ public class SearchPageFragment extends Fragment {
     private static String token;
     private static Player player;
     private static HashMap<String, HashMap<String, String>> songMap = new HashMap<>();
+    private static View view;
 
     public SearchPageFragment() {
         // Required empty public constructor
@@ -49,18 +52,32 @@ public class SearchPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search_page, container, false);
+         view = inflater.inflate(R.layout.fragment_search_page, container, false);
 
-        Button songBtn = getActivity().findViewById(R.id.song);
-        Button artistBtn = getActivity().findViewById(R.id.artist);
+        Button songBtn = view.findViewById(R.id.song);
+        Button artistBtn = view.findViewById(R.id.artist);
         setButtons(songBtn, artistBtn, "song");
         setButtons(artistBtn, songBtn, "artist");
+
+        Button home = view.findViewById(R.id.homePageButton);
+        Button browse = view.findViewById(R.id.browsePageButton);
+        Button search = view.findViewById(R.id.searchPageButton);
+        Button library = view.findViewById(R.id.myLibraryButton);
+        setOnClick(home, new HomePageFragment());
+        setOnClick(browse, new BrowsePageFragment());
+        setOnClick(search, new SearchPageFragment());
+        setOnClick(library, new MyLibraryPageFragment());
+        LinearLayout ll = getActivity().findViewById(R.id.nowPlayingText);
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { openNowPlayingPage(v); }});
+
         Bundle bundle = this.getArguments();
         player = (Player) bundle.get("player");
-        player.act = this;
+        player.act = view;
         player.setNowPlaying();
         token = player.getToken();
-        Button playPause = getActivity().findViewById(R.id.playPauseSongButton);
+        Button playPause = view.findViewById(R.id.playPauseSongButton);
         playPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changePlay(playPause); }});
@@ -184,49 +201,21 @@ public class SearchPageFragment extends Fragment {
         });
         itemsAdapter.notifyDataSetChanged();
     }
+    
+    public void setOnClick(Button btn, Fragment frag) {
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-    public void openHomePage(View v) {
-        HomePageFragment homePageFragment = new HomePageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        homePageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.search_page_layout, homePageFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void openBrowsePage(View v) {
-        BrowsePageFragment browsePageFragment = new BrowsePageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        browsePageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.search_page_layout, browsePageFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void openSearchPage(View v) {
-        SearchPageFragment searchPageFragment = new SearchPageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        searchPageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.search_page_layout, searchPageFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void openMyLibraryPage(View v) {
-        MyLibraryPageFragment myLibraryPageFragment = new MyLibraryPageFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("player", player);
-        myLibraryPageFragment.setArguments(args);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.search_page_layout, myLibraryPageFragment)
-                .addToBackStack(null)
-                .commit();
+                Bundle args = new Bundle();
+                args.putSerializable("player", player);
+                frag.setArguments(args);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.search_page_layout, frag)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
     public void openNowPlayingPage(View v) {
