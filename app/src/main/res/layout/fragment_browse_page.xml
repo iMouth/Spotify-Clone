@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BrowsePageActivity"
+    tools:context=".BrowsePageFragment"
+    android:id="@+id/browse_page_layout"
     android:background="@color/spotify_background">
 
     <ImageView

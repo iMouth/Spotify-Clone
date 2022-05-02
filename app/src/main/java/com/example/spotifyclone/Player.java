@@ -23,7 +23,7 @@ public class Player implements Serializable {
     protected static TreeMap<String, HashMap<String, String>> songs = new TreeMap<>();
     protected static ArrayList<String> songList = new ArrayList<>();
     private static String token;
-    protected static Activity act;
+    protected static MyLibraryPageFragment act;
     private static String curSong;
     protected boolean playing = false;
     private static int songPos = 0;

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyLibraryPageActivity"
+    tools:context=".HomePageFragment"
+    android:id="@+id/home_page_layout"
     android:background="@color/spotify_background">
 
     <ImageView
@@ -18,10 +19,10 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
-        android:id="@+id/myLibraryTitle"
+        android:id="@+id/homePageTitle"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:text="My Library"
+        android:text="Home"
         android:textColor="@color/white"
         android:textSize="36sp"
         android:textStyle="bold"
@@ -30,83 +31,48 @@
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/libraryShuffleShare"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/helperButton"
+        android:layout_width="50dp"
         android:layout_height="50dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/myLibraryTitle">
+        android:background="@drawable/helper_icon"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="openHelperPage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
-        <Button
-            android:id="@+id/shufflePlay"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight=".5"
-            android:background="@drawable/rounded_btn"
-            android:backgroundTint="@color/green"
-            android:onClick="openHomePage"
-            android:text="Shuffle Play"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/shareBtn"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight=".5"
-            android:background="@drawable/rounded_btn"
-            android:backgroundTint="@color/green"
-            android:text="Share"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/libraryBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:translationY="-50dp"
-        android:text="Back"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/libraryShuffleShare" />
-
-    <Button
-        android:id="@+id/editSongs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@drawable/rounded_btn"
-        android:text="Edit"
-        android:backgroundTint="@color/white"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/libraryShuffleShare" />
-
-    <ListView
-        android:id="@+id/librarySongs"
+    <TextView
+        android:id="@+id/greetingMessage"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        app:layout_constraintTop_toBottomOf="@+id/myLibraryTitle"
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="100dp"
-        />
+        android:layout_height="100dp"
+        android:text="Good Morning/Afternoon/Evening/Night"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/montserrat_alternates_medium"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/homePageTitle"/>
 
-    <ListView
-        android:id="@+id/contacts"
+    <ImageView
+        android:id="@+id/musicForEveryoneImage"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        app:layout_constraintTop_toBottomOf="@+id/myLibraryTitle"
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="100dp"
-        android:visibility="gone"/>
+        android:layout_height="250dp"
+        android:src="@drawable/home_page_pic"
+        app:layout_constraintTop_toBottomOf="@id/greetingMessage" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:text="@string/instructions"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:fontFamily="@font/montserrat_alternates_medium"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/musicForEveryoneImage" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -215,5 +181,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

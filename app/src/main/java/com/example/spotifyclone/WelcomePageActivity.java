@@ -1,6 +1,7 @@
 package com.example.spotifyclone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
@@ -31,7 +32,7 @@ public class WelcomePageActivity extends AppCompatActivity {
     private static final String CLIENT_ID = "eb56514e9b9f49a3addef0fb8da5d279";
     private static final String REDIRECT_URI = "http://com.example.spotifyclone/callback";
     private static SpotifyAppRemote remote;
-    private static String token;
+    private static String token = "BQBbyy6xhfFoLaZ-bhedf9pwlChh5LOebbTNE1BaitKj7wzlhkQk6Xd-m6KVVB5vdmZLAMXQBpX8TnbkGW4-fyaSc74Vc56pWSV7_K0Hg5A1zfk4LNtgLTbBuCsSQiUFeRbfDIO3RyiWDw6mNcSIuaJv9sZaRbQ7w7tSPAiOzu-nfrOrDgcSQx65bJUDaIfhhu31Ft3jLKIe3BjKsSiwRSHMVDpUL79qq_L0-gWhYlcaDPi3lSn8YDWP6TkCNNSjF8YtYOaMxyuXXN3UDGU6EtLE4Sw";
     private static final int REQUEST_CODE = 1337;
 
     @Override
@@ -52,9 +53,17 @@ public class WelcomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Player player = new Player(remote, token);
-                Intent home = new Intent(WelcomePageActivity.this, HomePageActivity.class);
-                home.putExtra("player", player);
-                startActivity(home);
+                HomePageFragment homePageFragment = new HomePageFragment();
+                Bundle args = new Bundle();
+                args.putSerializable("player", player);
+                homePageFragment.setArguments(args);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.welcome_page_layout, homePageFragment)
+                        .addToBackStack(null)
+                        .commit();
+//                Intent home = new Intent(WelcomePageActivity.this, HomePageActivity.class);
+//                home.putExtra("player", player);
+//                startActivity(home);
             }
         });
     }

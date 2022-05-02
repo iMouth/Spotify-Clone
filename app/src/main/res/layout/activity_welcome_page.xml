@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".WelcomePageActivity"
     android:orientation="vertical"
+    android:id="@+id/welcome_page_layout"
     android:background="@color/spotify_background">
 
     <ImageView
