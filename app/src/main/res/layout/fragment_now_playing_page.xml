@@ -85,13 +85,6 @@
         app:layout_constraintTop_toBottomOf="@id/artistName">
 
         <Button
-            android:id="@+id/removeSongButton"
-            android:layout_width="75dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:background="@drawable/minus_icon"></Button>
-
-        <Button
             android:id="@+id/prevSongButton"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -113,13 +106,6 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:background="@drawable/skip_song"></Button>
-
-        <Button
-            android:id="@+id/addSongButton"
-            android:layout_width="75dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/plus_icon"></Button>
 
     </LinearLayout>
 

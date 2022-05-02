@@ -47,7 +47,9 @@ public class Player implements Serializable {
             btn.setText("pause");
             btn.setBackgroundResource(R.drawable.pause_icon);
         }
-        if (!songs.isEmpty()) { act.findViewById(R.id.nowPlayingText).setVisibility(View.VISIBLE); }
+        if (!songs.isEmpty() && act.findViewById(R.id.nowPlayingText) != null) {
+            act.findViewById(R.id.nowPlayingText).setVisibility(View.VISIBLE);
+        }
     }
 
     public ArrayList<String> getSongs() { return songList; }
@@ -66,7 +68,7 @@ public class Player implements Serializable {
             curSong = songList.get(0);
             playSong(curSong);
         }
-        if (songs.isEmpty()) {
+        if (songs.isEmpty() &&  act.findViewById(R.id.nowPlayingText) != null) {
             act.findViewById(R.id.nowPlayingText).setVisibility(View.GONE);
             act.findViewById(R.id.playPauseSongButton).setVisibility(View.GONE);
             act.findViewById(R.id.albumCoverImage).setVisibility(View.GONE);
