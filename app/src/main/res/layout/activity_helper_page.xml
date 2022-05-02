@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HelperPageActivity"
+    android:id="@+id/helper_page_layout"
     android:background="@color/spotify_background">
 
     <ImageView
@@ -18,6 +19,7 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
+        android:id="@+id/helper_title"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:text="Helper"
@@ -30,6 +32,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/helper_title"
+        app:layout_constraintBottom_toTopOf="@id/bottom_layout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/helper"
+            android:textColor="@color/white"
+            android:fontFamily="@font/montserrat_alternates_medium"
+            android:gravity="center"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="vertical"

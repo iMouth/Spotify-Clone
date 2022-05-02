@@ -43,32 +43,57 @@ public class HelperPageActivity extends AppCompatActivity {
 
 
     public void openHomePage(View v) {
-        Intent homePageIntent = new Intent(this, HomePageActivity.class);
-        homePageIntent.putExtra("player", player);
-        startActivity(homePageIntent);
+        HomePageFragment homePageFragment = new HomePageFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("player", player);
+        homePageFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.helper_page_layout, homePageFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void openBrowsePage(View v) {
-        Intent browsePageIntent = new Intent(this, BrowsePageActivity.class);
-        browsePageIntent.putExtra("player", player);
-        startActivity(browsePageIntent);
+        BrowsePageFragment browsePageFragment = new BrowsePageFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("player", player);
+        browsePageFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.helper_page_layout, browsePageFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void openSearchPage(View v) {
-        Intent searchPageIntent = new Intent(this, SearchPageActivity.class);
-        searchPageIntent.putExtra("player", player);
-        startActivity(searchPageIntent);
+        SearchPageFragment searchPageFragment = new SearchPageFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("player", player);
+        searchPageFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.helper_page_layout, searchPageFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void openMyLibraryPage(View v) {
-        Intent myLibraryPageIntent = new Intent(this, MyLibraryPageActivity.class);
-        myLibraryPageIntent.putExtra("player", player);
-        startActivity(myLibraryPageIntent);
+        MyLibraryPageFragment myLibraryPageFragment = new MyLibraryPageFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("player", player);
+        myLibraryPageFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.helper_page_layout, myLibraryPageFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void openNowPlayingPage(View v) {
-        Intent nowPlayingPageIntent = new Intent(this, NowPlayingPageActivity.class);
-        nowPlayingPageIntent.putExtra("player", player);
-        startActivity(nowPlayingPageIntent);
+        NowPlayingPageFragment nowPlayingPageFragment = new NowPlayingPageFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("player", player);
+        nowPlayingPageFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.helper_page_layout, nowPlayingPageFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
