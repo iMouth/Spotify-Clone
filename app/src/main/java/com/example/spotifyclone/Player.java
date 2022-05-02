@@ -132,10 +132,10 @@ public class Player implements Serializable {
     }
 
     public void setNowPlaying() {
-        if (act.findViewById(R.id.nowPlayingText) != null) {
+        if (songs.isEmpty() && act.findViewById(R.id.nowPlayingText) != null) {
             act.findViewById(R.id.nowPlayingText).setVisibility(View.GONE);
             act.findViewById(R.id.playPauseSongButton).setVisibility(View.GONE);
-        } else if (act.findViewById(R.id.nowPlayingText) != null ) {
+        } else if (!songs.isEmpty() && act.findViewById(R.id.nowPlayingText) != null ) {
             act.findViewById(R.id.playPauseSongButton).setVisibility(View.VISIBLE);
             act.findViewById(R.id.nowPlayingText).setVisibility(View.VISIBLE);
             act.findViewById(R.id.playPauseSongButton).setVisibility(View.VISIBLE);
