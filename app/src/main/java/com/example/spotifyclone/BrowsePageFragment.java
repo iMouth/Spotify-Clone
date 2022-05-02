@@ -141,7 +141,7 @@ public class BrowsePageFragment extends Fragment {
                 String search = setSearch(genreName);
                 Thread t = new Thread(() -> {
                     JSONObject songObj = getSongs(search);
-                    getActivity().runOnUiThread(() -> updateUI(songObj));
+                    if (songObj != null) getActivity().runOnUiThread(() -> updateUI(songObj));
                 });
                 t.start();
             }
@@ -177,11 +177,11 @@ public class BrowsePageFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        setList(songObj);
+        setList();
         changeDisplay();
     }
 
-    public void setList(JSONObject songObj) {
+    public void setList() {
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(getContext(), R.layout.song_row, songListName);
         ListView lw = getActivity().findViewById(R.id.browseSongs);

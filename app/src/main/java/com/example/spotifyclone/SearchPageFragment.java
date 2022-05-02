@@ -114,7 +114,7 @@ public class SearchPageFragment extends Fragment {
                 setSearch();
                 Thread t = new Thread(() -> {
                     JSONObject songObj = getSongs();
-                    getActivity().runOnUiThread(() -> updateUI(songObj));
+                    if (songObj != null) getActivity().runOnUiThread(() -> updateUI(songObj));
                 });
                 t.start();
             }
