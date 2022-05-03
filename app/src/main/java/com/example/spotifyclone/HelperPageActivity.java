@@ -1,3 +1,12 @@
+/*
+ * HelperPageActivity.java
+ * @author: Daniel and Kelvin
+ *
+ * This program sets up the activity for the helper page activity. This activity just
+ * shows the user how they can navigate and user the application.
+ *
+ */
+
 package com.example.spotifyclone;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,38 +23,26 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+/**
+ * Displays text to let the user know how to use the application
+ */
 public class HelperPageActivity extends AppCompatActivity {
 
     private static Player player;
 
-
+    /**
+     * Sets the view for the helper page activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_helper_page);
 
-        Button home = findViewById(R.id.homePageButton);
-        Button browse = findViewById(R.id.browsePageButton);
-        Button search = findViewById(R.id.searchPageButton);
-        Button library = findViewById(R.id.myLibraryButton);
-        setOnClick(home, new HomePageFragment());
-        setOnClick(browse, new BrowsePageFragment());
-        setOnClick(search, new SearchPageFragment());
-        setOnClick(library, new MyLibraryPageFragment());
-        LinearLayout ll = findViewById(R.id.nowPlayingText);
-        ll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { openNowPlayingPage(v); }});
-
         Bundle extras = getIntent().getExtras();
         player = (Player) extras.get("player");
-        player.setNowPlaying();
-        Button playPause = findViewById(R.id.playPauseSongButton);
-        playPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { changePlay(playPause); }});
 
-        if (player.playing) changePlay(playPause);
+        setButtons();
         if (!player.songs.isEmpty()) {
             findViewById(R.id.nowPlayingText).setVisibility(View.VISIBLE);
             findViewById(R.id.playPauseSongButton).setVisibility(View.VISIBLE);
@@ -56,6 +53,34 @@ public class HelperPageActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets nav buttons the user can click on
+     */
+    public void setButtons() {
+        Button home = findViewById(R.id.homePageButton);
+        Button browse = findViewById(R.id.browsePageButton);
+        Button search = findViewById(R.id.searchPageButton);
+        Button library = findViewById(R.id.myLibraryButton);
+        Button playPause = findViewById(R.id.playPauseSongButton);
+
+        setOnClick(home, new HomePageFragment());
+        setOnClick(browse, new BrowsePageFragment());
+        setOnClick(search, new SearchPageFragment());
+        setOnClick(library, new MyLibraryPageFragment());
+        LinearLayout ll = findViewById(R.id.nowPlayingText);
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { openNowPlayingPage(v); }});
+        playPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { changePlay(playPause); }});
+        if (player.playing) changePlay(playPause);
+
+    }
+
+    /**
+     * Sets the now playing section of the application with the current song playing
+     */
     public void setNowPlaying() {
         TextView songNameTextView = findViewById(R.id.songName);
         TextView artistNameTextView = findViewById(R.id.artistName);
@@ -68,6 +93,10 @@ public class HelperPageActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Change what the play button looks like
+     * @param button play pause button for now playing section
+     */
     public void changePlay(Button button) {
         if (!player.songList.isEmpty()) {
             if (button.getText().equals("play")) {
@@ -83,7 +112,11 @@ public class HelperPageActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Sets an on click listener to replace the search fragment with
+     * @param btn Button to set Click Listener to
+     * @param frag Fragment to replace search page layout with
+     */
     public void setOnClick(Button btn, Fragment frag) {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +132,10 @@ public class HelperPageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Launches now playing fragment
+     * @param v View
+     */
     public void openNowPlayingPage(View v) {
         NowPlayingPageFragment nowPlayingPageFragment = new NowPlayingPageFragment();
         Bundle args = new Bundle();

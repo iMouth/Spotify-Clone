@@ -1,3 +1,16 @@
+/*
+ * BrowsePageFragment.java
+ * @author: Daniel and Kelvin
+ *
+ * This program sets up the fragment for the browse page fragment. The user will be given 4 random
+ * choices for genres to search from. The user can click randomize and they will get 4 more choices
+ * of generes. Once a user clicks a genre the display will change and a list of 50 songs will be
+ * displayed of the genre. These songs were gathered using an API call to the Spotify API. The user
+ * can click one of these songs and it will start playing and add it to the library of songs in the
+ * user's playlist. The user can click back to go back and select another genre to search from.
+ *
+ */
+
 package com.example.spotifyclone;
 
 import android.content.Intent;
@@ -34,6 +47,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Allows the user 4 choices for a genre search. The user can click randomize to get
+ * additional choices
+ */
 public class BrowsePageFragment extends Fragment {
 
     private static List<String> genres = new ArrayList<>();
@@ -44,25 +61,42 @@ public class BrowsePageFragment extends Fragment {
     private static Player player;
     private static View view;
 
-    public BrowsePageFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public BrowsePageFragment() { }
 
+    /**
+     * Sets the view for the browse page fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         container.removeAllViews();
         view = inflater.inflate(R.layout.fragment_browse_page, container, false);
-        setGenres();
-        setColors();
-        setButtons();
         Bundle bundle = this.getArguments();
         player = (Player) bundle.get("player");
         player.act = view;
         player.setNowPlaying();
         token = player.getToken();
 
+        setGenres();
+        setColors();
+        setNavButtons();
+        setGenreButtons();
+
+        return view;
+    }
+
+    /**
+     * Sets nav buttons the user can click on
+     */
+    public void setNavButtons() {
         Button home = view.findViewById(R.id.homePageButton);
         Button browse = view.findViewById(R.id.browsePageButton);
         Button search = view.findViewById(R.id.searchPageButton);
@@ -75,24 +109,17 @@ public class BrowsePageFragment extends Fragment {
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { openNowPlayingPage(v); }});
-
-
-        Button random = view.findViewById(R.id.randomize);
-        Button back = view.findViewById(R.id.back);
-        random.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { randomize(); }});
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { changeDisplay(); }});
         Button playPause = view.findViewById(R.id.playPauseSongButton);
         if (player.playing) changePlay(playPause);
         playPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changePlay(playPause); }});
-        return view;
     }
 
+    /**
+     * Change what the play button looks like
+     * @param button play pause button for now playing section
+     */
     public void changePlay(Button button) {
         if (!player.songList.isEmpty()) {
             if (button.getText().equals("play")) {
@@ -108,14 +135,29 @@ public class BrowsePageFragment extends Fragment {
         }
     }
 
-    public void setButtons() {
+    /**
+     * Randomizes buttons buttons genere and button colors and sets button clicks of the buttons
+     */
+    public void setGenreButtons() {
         randomize();
         buttonClick(view.findViewById(R.id.genre1));
         buttonClick(view.findViewById(R.id.genre2));
         buttonClick(view.findViewById(R.id.genre3));
         buttonClick(view.findViewById(R.id.genre4));
+
+        Button random = view.findViewById(R.id.randomize);
+        Button back = view.findViewById(R.id.back);
+        random.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { randomize(); }});
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { changeDisplay(); }});
     }
 
+    /**
+     * Randomizes the genres and genre button colors
+     */
     public void randomize() {
         Collections.shuffle(genres);
         Collections.shuffle(colors);
@@ -133,6 +175,12 @@ public class BrowsePageFragment extends Fragment {
         genre4.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colors.get(3))));
     }
 
+    /**
+     * When a genre is clicked it gets the genre name and sets the API search URL to that genre
+     * name. It gets the JSON object of songs of that genre and updates the UI to display the list
+     * of songs.
+     * @param genre
+     */
     public void buttonClick(Button genre) {
         genre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +196,9 @@ public class BrowsePageFragment extends Fragment {
         });
     }
 
+    /**
+     * Sets the search url given the users choice whether is is artist of song
+     */
     public String setSearch(String genreName) {
         Random random = new Random();
         int offset = random.nextInt(1000);
@@ -156,6 +207,11 @@ public class BrowsePageFragment extends Fragment {
         return search;
     }
 
+    /**
+     * Parses the JSON object to the the song name, uri, picture, and artist of all the songs
+     * in the object
+     * @param songObj JSON Object from Spotify API call
+     */
     public void updateUI(JSONObject songObj) {
         try {
             songListName.clear();
@@ -181,6 +237,9 @@ public class BrowsePageFragment extends Fragment {
         changeDisplay();
     }
 
+    /**
+     * Sets list for the list of songs.
+     */
     public void setList() {
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(getContext(), R.layout.song_row, songListName);
@@ -195,6 +254,9 @@ public class BrowsePageFragment extends Fragment {
         itemsAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Changes the display to the genre choices or the list of songs from the genere clicked
+     */
     public void changeDisplay() {
         int visible1;
         int visible2;
@@ -214,6 +276,9 @@ public class BrowsePageFragment extends Fragment {
         getActivity().findViewById(R.id.browseSongs).setVisibility(visible2);
     }
 
+    /**
+     * Gets all the generes from the genres.txt file and puts it in the generes arraylist
+     */
     public void setGenres() {
         try {
             InputStream f = getActivity().getApplicationContext().getAssets().open("genres.txt");
@@ -233,6 +298,9 @@ public class BrowsePageFragment extends Fragment {
         }
     }
 
+    /**
+     * Gets all the colors form the colors.txt file and puts it in the colors arraylist
+     */
     public void setColors() {
         try {
             InputStream f = getActivity().getApplicationContext().getAssets().open("colors.txt");
@@ -254,6 +322,10 @@ public class BrowsePageFragment extends Fragment {
         }
     }
 
+    /**
+     * send API call to Spotify API with the given search URL
+     * @return JSON Object from API call
+     */
     public JSONObject getSongs(String search) {
         try {
             String json = "";
@@ -275,6 +347,11 @@ public class BrowsePageFragment extends Fragment {
         return null;
     }
 
+    /**
+     * Sets an on click listener to replace the search fragment with
+     * @param btn Button to set Click Listener to
+     * @param frag Fragment to replace search page layout with
+     */
     public void setOnClick(Button btn, Fragment frag) {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,6 +367,10 @@ public class BrowsePageFragment extends Fragment {
         });
     }
 
+    /**
+     * Launches now playing fragment
+     * @param v View
+     */
     public void openNowPlayingPage(View v) {
         NowPlayingPageFragment nowPlayingPageFragment = new NowPlayingPageFragment();
         Bundle args = new Bundle();

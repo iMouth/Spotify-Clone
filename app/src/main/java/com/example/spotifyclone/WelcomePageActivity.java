@@ -1,3 +1,13 @@
+/*
+ * WelcomePageActivity.java
+ * @author: Daniel and Kelvin
+ *
+ * This program sets up the welcome page activity. The activity starts by getting the token
+ * for making Spotify API calls from the user, setting up the remote for spotify, and setting
+ * up the Player Object user throughout the application. The user can start by pressing the start
+ * exploring button.
+ */
+
 package com.example.spotifyclone;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,26 +39,35 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+/**
+ * Displays welcome page for application and gets the token to make API calls and sets up
+ * remote for spotify
+ */
 public class WelcomePageActivity extends AppCompatActivity {
     private static final String CLIENT_ID = "eb56514e9b9f49a3addef0fb8da5d279";
     private static final String REDIRECT_URI = "http://com.example.spotifyclone/callback";
     private static SpotifyAppRemote remote;
-    private static String token = "BQBbyy6xhfFoLaZ-bhedf9pwlChh5LOebbTNE1BaitKj7wzlhkQk6Xd-m6KVVB5vdmZLAMXQBpX8TnbkGW4-fyaSc74Vc56pWSV7_K0Hg5A1zfk4LNtgLTbBuCsSQiUFeRbfDIO3RyiWDw6mNcSIuaJv9sZaRbQ7w7tSPAiOzu-nfrOrDgcSQx65bJUDaIfhhu31Ft3jLKIe3BjKsSiwRSHMVDpUL79qq_L0-gWhYlcaDPi3lSn8YDWP6TkCNNSjF8YtYOaMxyuXXN3UDGU6EtLE4Sw";
+    private static String token;
     private static final int REQUEST_CODE = 1337;
-    private static Activity act;
 
+
+    /**
+     * Creates view for activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
-        Bundle extras = getIntent().getExtras();
-        moveLogo();
-        act = this;
     }
 
+    /**
+     * Sets functionality for welcome page
+     */
     @Override
     protected void onStart() {
         super.onStart();
+        moveLogo();
         setToken();
         setRemote();
         Button btn = findViewById(R.id.startExploringButton);
@@ -71,6 +90,9 @@ public class WelcomePageActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * connects spotify to remote
+     */
     public void setRemote() {
         ConnectionParams connectionParams =
                 new ConnectionParams.Builder(CLIENT_ID)
@@ -94,8 +116,10 @@ public class WelcomePageActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Gets token for API calls by displaying auth to the user
+     */
     public void setToken() {
-        // Gets token for API Calls
         AuthorizationRequest.Builder builder =
                 new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
         builder.setScopes(new String[]{"streaming"});
@@ -104,6 +128,12 @@ public class WelcomePageActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Gets the token user to send API calls to Spotify API.
+     * @param requestCode 1337 representing a API call to get a token
+     * @param resultCode code representing what the auth returned
+     * @param intent Intent for authorization
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
@@ -128,6 +158,9 @@ public class WelcomePageActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Moves spotify logo around the home page
+     */
     public void moveLogo() {
         ImageView spotifyLogo = findViewById(R.id.spotifyLogo);
         Path path = new Path();

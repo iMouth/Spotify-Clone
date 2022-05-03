@@ -1,3 +1,14 @@
+/*
+ * Player.java
+ * @author: Daniel and Kelvin
+ *
+ * This program sets up the player class for the application. This class is used to hold all the
+ * song information such as song name, song uri, song artist, and song picture. You can add and
+ * remove a song, play, pause, or resume a song, set up now playing segment of the application,
+ * shuffle song playlist, get songs and song info, get current song, and play next or previous song.
+ *
+ */
+
 package com.example.spotifyclone;
 
 
@@ -19,6 +30,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Sets up the Player class that holds the songs and song information. It also plays and stops
+ * songs from playing.
+ */
 public class Player implements Serializable {
     private static SpotifyAppRemote remote;
     protected static TreeMap<String, HashMap<String, String>> songs = new TreeMap<>();
@@ -28,16 +43,30 @@ public class Player implements Serializable {
     private static String curSong;
     protected boolean playing = false;
 
+    /**
+     * Constructor for player class
+     * @param remote Spotify remote to play/pause songs
+     * @param token for making Spotify API calls
+     */
     public Player(SpotifyAppRemote remote, String token) {
         this.remote = remote;
         this.token = token;
 
     }
 
+    /**
+     * gets token for Spotify API calls
+     * @return String of token
+     */
     public String getToken() {
         return this.token;
     }
 
+    /***
+     * Adds songs to playlist
+     * @param name of of song to add
+     * @param info uri artist and picture of song
+     */
     public void addSong(String name, HashMap info) {
         songs.put(name, info);
         songList.add(name);
@@ -52,8 +81,16 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * Gets list of songs
+     * @return list of songs
+     */
     public ArrayList<String> getSongs() { return songList; }
 
+    /**
+     * removes song from playlist
+     * @param name name of song to remove
+     */
     public void removeSong(String name) {
         songList.remove(name);
         songs.remove(name);
@@ -75,16 +112,25 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * Pauses current song
+     */
     public void pause() {
         remote.getPlayerApi().pause();
         playing = false;
     }
 
+    /**
+     * Resumes current song
+     */
     public void resume() {
         remote.getPlayerApi().resume();
         playing = true;
     }
 
+    /**
+     * Goes to previous song in playlist
+     */
     public void previous() {
         for (int i = 0; i < songList.size(); i++) {
             if (songList.get(i) == getCurrentSongName()) {
@@ -98,6 +144,9 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * Goes to next song in playlist
+     */
     public void next() {
         for (int i = 0; i < songList.size(); i++) {
             if (songList.get(i) == getCurrentSongName()) {
@@ -111,7 +160,10 @@ public class Player implements Serializable {
         }
     }
 
-
+    /**
+     * Play song
+     * @param name name of song to get played
+     */
     public void playSong(String name) {
         playing = true;
         curSong = name;
@@ -119,18 +171,33 @@ public class Player implements Serializable {
         setNowPlaying();
     }
 
+    /**
+     * Gets and returns current song name
+     * @return String of name of current song playing
+     */
     public String getCurrentSongName() {
         return curSong;
     }
 
+    /**
+     * Gets the info for a current song name the info being uri artist and picture
+     * @param name Name of song to get info from
+     * @return Hashmap of info of song
+     */
     public HashMap<String, String> getInfo(String name) {
         return songs.get(name);
     }
 
+    /**
+     * Shuffle splaylist
+     */
     public void shuffleSongs() {
         Collections.shuffle(songList);
     }
 
+    /**
+     * Sets up now playing for the view
+     */
     public void setNowPlaying() {
         if (songs.isEmpty() && act.findViewById(R.id.nowPlayingText) != null) {
             act.findViewById(R.id.nowPlayingText).setVisibility(View.GONE);

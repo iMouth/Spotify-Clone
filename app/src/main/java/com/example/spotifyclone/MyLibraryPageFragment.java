@@ -1,3 +1,16 @@
+/*
+ * MyLibraryPageFragment.java
+ * @author: Daniel and Kelvin
+ *
+ * This program sets up the fragment for the library fragment of the application. This fragment
+ * shows the current list of songs the user has added from the playlist from the browse or search
+ *fragment. The user can shuffle this playlist. The user can also share this playlist with someone
+ * from their contact. The User can also remove songs from the playlist by clicking edit and
+ * clicking a song they wish to remove. The user can play a song by clicking on it when not in
+ * edit mode. Edit mode is in red, white otherwise.
+ *
+ */
+
 package com.example.spotifyclone;
 
 import android.annotation.SuppressLint;
@@ -20,6 +33,11 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+/**
+ * Allows the user to see what songs are in their playlist. The user can click the songs from their
+ * playlist or shuffle them. The user can also edit the songs in their playlist. The user can
+ * also share the playlist with someone from their contacts.
+ */
 public class MyLibraryPageFragment extends Fragment {
 
     private static Player player;
@@ -34,6 +52,13 @@ public class MyLibraryPageFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Creates view for library fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,11 +69,28 @@ public class MyLibraryPageFragment extends Fragment {
         Bundle bundle = this.getArguments();
         player = (Player) bundle.get("player");
         player.act = view;
+        player.setNowPlaying();
 
+        getContacts();
+        songs = player.getSongs();
+        setupAdapter(view.findViewById(R.id.contacts), contacts, contactsAdapter);
+        setupAdapter(view.findViewById(R.id.librarySongs), songs, songsAdapter);
+        setFragButtons();
+        setUserButtons();
+
+        return view;
+    }
+
+    /**
+     * Sets the buttons used for navigation to different fragments
+     */
+    public void setFragButtons() {
         Button home = view.findViewById(R.id.homePageButton);
         Button browse = view.findViewById(R.id.browsePageButton);
         Button search = view.findViewById(R.id.searchPageButton);
         Button library = view.findViewById(R.id.myLibraryButton);
+        Button playPause = view.findViewById(R.id.playPauseSongButton);
+
         setOnClick(home, new HomePageFragment());
         setOnClick(browse, new BrowsePageFragment());
         setOnClick(search, new SearchPageFragment());
@@ -57,22 +99,16 @@ public class MyLibraryPageFragment extends Fragment {
         ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { openNowPlayingPage(v); }});
-
-        player.setNowPlaying();
-        getContacts();
-        songs = player.getSongs();
-        setupAdapter(view.findViewById(R.id.contacts), contacts, contactsAdapter);
-        setupAdapter(view.findViewById(R.id.librarySongs), songs, songsAdapter);
-        Button playPause = view.findViewById(R.id.playPauseSongButton);
         playPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changePlay(playPause); }});
-        setButtons();
         if (player.playing) changePlay(playPause);
-
-        return view;
     }
 
+    /**
+     * Change what the play button looks like
+     * @param button play pause button for now playing section
+     */
     public void changePlay(Button button) {
         if (!player.songList.isEmpty()) {
             if (button.getText().equals("play")) {
@@ -88,7 +124,10 @@ public class MyLibraryPageFragment extends Fragment {
         }
     }
 
-    public void setButtons() {
+    /**
+     * Sets the buttons the user can click on on this fragment excluding nav buttons
+     */
+    public void setUserButtons() {
         Button shuffle = view.findViewById(R.id.shufflePlay);
         Button share = view.findViewById(R.id.shareBtn);
         ListView lvContacts = view.findViewById(R.id.contacts);
@@ -124,6 +163,10 @@ public class MyLibraryPageFragment extends Fragment {
             public void onClick(View v) { setEdit(edit); }});
     }
 
+    /**
+     * Sets the edit button from editing clicking to delete songs or clicking to play songs
+     * @param edit Edit button
+     */
     public void setEdit(Button edit) {
         if (change == 1) {
             change = 0;
@@ -151,6 +194,9 @@ public class MyLibraryPageFragment extends Fragment {
         }
     }
 
+    /**
+     * Changes the view from list of songs to contacts or vice versa
+     */
     public void changeView() {
         int vis = getActivity().findViewById(R.id.libraryBack).getVisibility();
         if (View.VISIBLE == vis){
@@ -170,27 +216,41 @@ public class MyLibraryPageFragment extends Fragment {
         }
     }
 
+    /**
+     * Sets up adapter for a listview to display either contacts of songs
+     * @param lv listview of what items to be displaying
+     * @param array Array that holds the info in the listview
+     * @param adapter arrayadapter for displaying content of listview
+     */
     private void setupAdapter(ListView lv, ArrayList<String> array, ArrayAdapter<String> adapter) {
         adapter = new ArrayAdapter<String>(getContext(), R.layout.song_row, R.id.text1, array);
         lv.setAdapter(adapter);
     }
 
+    /**
+     * Finds the email that the user clicked on and starts an intent to that email
+     * @param position of email in list
+     */
     @SuppressLint("Range")
     public void onShareClick(int position) {
-        Cursor emails = getActivity().getContentResolver().query(
-                ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-                ContactsContract.CommonDataKinds.Email.CONTACT_ID+" = " + position,
-                null, null);
         String email   = "";
-        Cursor cursorEmail      = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-                null,
+        Cursor cursorEmail      = getActivity().getContentResolver()
+                .query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
                 ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
                 new String[] {String.valueOf(position)},
                 null);
         if(cursorEmail.moveToFirst()) {
-            email = cursorEmail.getString(cursorEmail.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
+            email = cursorEmail.getString(cursorEmail.
+                    getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
         }
+        startIntent(email);
+    }
 
+    /**
+     * Starts an email intent to a given email with the entire playlist song names
+     * @param email email to be send to
+     */
+    public void startIntent(String email) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("vnd.android.cursor.dir/email");
         StringBuilder sb = new StringBuilder();
@@ -204,6 +264,9 @@ public class MyLibraryPageFragment extends Fragment {
         startActivity(intent);
     }
 
+    /**
+     * Gets the contacts from the users phone and puts it into a Name :: ID format
+     */
     public void getContacts() {
         Cursor cursor = getActivity().getContentResolver().query(
                 ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
@@ -217,6 +280,11 @@ public class MyLibraryPageFragment extends Fragment {
         cursor.close();
     }
 
+    /**
+     * Sets an on click listener to replace the library fragment with
+     * @param btn Button to set Click Listener to
+     * @param frag Fragment to replace library page layout with
+     */
     public void setOnClick(Button btn, Fragment frag) {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,6 +300,10 @@ public class MyLibraryPageFragment extends Fragment {
         });
     }
 
+    /**
+     * Launches now playing fragment
+     * @param v View
+     */
     public void openNowPlayingPage(View v) {
         NowPlayingPageFragment nowPlayingPageFragment = new NowPlayingPageFragment();
         Bundle args = new Bundle();
