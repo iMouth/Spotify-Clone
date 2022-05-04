@@ -66,11 +66,6 @@ public class Player implements Serializable {
         songs.put(name, info);
         songList.add(name);
         playSong(name);
-        Button btn = act.findViewById(R.id.playPauseSongButton);
-        if ( btn.getText().equals("play")) {
-            btn.setText("pause");
-            btn.setBackgroundResource(R.drawable.pause_icon);
-        }
         if (!songs.isEmpty() && act.findViewById(R.id.nowPlayingText) != null) {
             act.findViewById(R.id.nowPlayingText).setVisibility(View.VISIBLE);
         }
@@ -164,6 +159,11 @@ public class Player implements Serializable {
         curSong = name;
         remote.getPlayerApi().play(songs.get(name).get("uri"));
         setNowPlaying();
+        Button btn = act.findViewById(R.id.playPauseSongButton);
+        if ( btn.getText().equals("play")) {
+            btn.setText("pause");
+            btn.setBackgroundResource(R.drawable.pause_icon);
+        }
     }
 
     /**

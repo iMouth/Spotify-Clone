@@ -13,6 +13,8 @@
 
 package com.example.spotifyclone;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,6 +32,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -62,7 +67,7 @@ public class MyLibraryPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        container.clearDisappearingChildren();
+        container.removeAllViews();
         view = inflater.inflate(R.layout.fragment_my_library_page, container, false);
 
         Bundle bundle = this.getArguments();
@@ -137,8 +142,8 @@ public class MyLibraryPageFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String songName= (String) parent.getItemAtPosition(position);
-                player.setNowPlaying();
                 player.playSong(songName);}});
+                player.setNowPlaying();
         lvContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -154,7 +159,6 @@ public class MyLibraryPageFragment extends Fragment {
             public void onClick(View v) {
                 player.shuffleSongs();
                 songs = player.getSongs();
-                System.out.println(songsAdapter);
                 setupAdapter(getActivity().findViewById(R.id.librarySongs), songs, songsAdapter);
             }});
         edit.setOnClickListener(new View.OnClickListener() {
@@ -255,8 +259,25 @@ public class MyLibraryPageFragment extends Fragment {
         StringBuilder sb = new StringBuilder();
         for (String s : songs) {
             sb.append(s);
+            sb.append(" - " + player.getInfo(s).get("artist"));
             sb.append("\n");
         }
+
+        String playlist = sb.toString();
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = getActivity().openFileOutput("playlist.txt", MODE_PRIVATE);
+            outputStream.write(playlist.getBytes());
+            outputStream.close();
+            System.out.println("XXX");
+        } catch (FileNotFoundException e) {
+            System.out.println("BBB");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("CCC");
+            e.printStackTrace();
+        }
+
         intent.putExtra(Intent.EXTRA_SUBJECT, "Spotify Playlist");
         intent.putExtra(Intent.EXTRA_TEXT, sb.toString());
         intent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {email});
